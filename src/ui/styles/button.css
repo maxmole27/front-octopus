@@ -1,0 +1,12 @@
+.p-button {
+  background-color: var(--purple-blaze-200);
+  border: 0;
+  padding: 10px;
+  transition: .1s ease-in;
+  &:hover {
+    background-color: var(--purple-blaze-300);
+  }
+  &:disabled {
+    opacity: .6;
+  }
+}
