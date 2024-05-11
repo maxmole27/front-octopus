@@ -1,0 +1,9 @@
+
+.sidebar-element {
+  margin-bottom: 1rem;
+  display: block;
+  transition: var(--transition);
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+}
