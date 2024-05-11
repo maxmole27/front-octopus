@@ -1,0 +1,13 @@
+.header {
+  background: linear-gradient(90deg, var(--purple-blaze-b) 0%, var(--purple-blaze-c) 100%);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  top: 0;
+}

@@ -1,0 +1,12 @@
+
+.sidebar {
+  background: linear-gradient(180deg, var(--purple-blaze-200) 0%, var(--purple-blaze-a) 100%);;
+  color: var(--grayscale-50);
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  transition: width 0.3s;
+  width: var(--sidebar-width);
+  z-index: 1000;
+}

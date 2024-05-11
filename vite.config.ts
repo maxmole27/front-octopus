@@ -17,6 +17,7 @@ export default defineConfig({
       '@routes': '/src/routes',
       '@assets': '/src/assets',
       '@components': '/src/ui/components',
+      '@system-manager': '/src/features/system-manager',
     }
   }
 })

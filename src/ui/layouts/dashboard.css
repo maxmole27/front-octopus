@@ -1,0 +1,12 @@
+.sidebar_wrapper {
+  width: var(--sidebar-width);
+}
+
+.header_wrapper {
+  height: var(--header-height);
+  margin-left: var(--sidebar-width);
+}
+
+.content_main {
+  margin-left: var(--sidebar-width);
+}

@@ -5,5 +5,37 @@
   --purple-blaze-300: #403545;
   --purple-blaze-400: #2D2530;
   --purple-blaze-500: #211923;
+  --purple-blaze-a: #513B4B;
+  --purple-blaze-b: #4F355A;
+  --purple-blaze-c: #8A6A98;
+  --purple-blaze-d: #957BA0;
 
+  --grayscale-50: #FFFFFF;
+  --grayscale-100: #FAFAFA;
+  --grayscale-200: #D5D5D5;
+  --grayscale-300: #939393;
+  --grayscale-400: #5B5B5B;
+  --grayscale-500: #333333;
+
+  --aurus-50: #FBF5E3;
+  --aurus-100: #F4EDD2;
+  --aurus-200: #DCCFA3;
+  --aurus-300: #BCAD77;
+  --aurus-400: #A49257;
+  --aurus-500: #766837;
+
+  --red-tomato-50: #e1c5c6;
+  --red-tomato-100: #D3A7AA;
+  --red-tomato-200: #C48A8D;
+  --red-tomato-300: #B56D71;
+  --red-tomato-400: #7F4C4F;
+  --red-tomato-500: #583235;
+
+  --breakpoint-xs: 576px;
+  --breakpoint-s: 768px;
+  --breakpoint-m: 992px;
+  --breakpoint-l: 1200px;
+
+  --sidebar-width: 60px;
+  --header-height: 60px;
 }

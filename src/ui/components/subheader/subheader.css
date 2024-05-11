@@ -1,0 +1,6 @@
+.subheader {
+  background-color:#4A3F4E;
+  padding: 0.5rem 1rem;
+  margin-left: var(--sidebar-width);
+  width: 100%;
+}

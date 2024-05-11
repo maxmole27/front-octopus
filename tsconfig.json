@@ -27,7 +27,8 @@
       "@routes/*": ["src/routes/*"],
       "@ui/*": ["src/ui/*"],
       "@components/*": ["src/ui/components/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@system-manager/*": ["src/features/system-manager/*"],
     }
   },
   "include": ["src"],

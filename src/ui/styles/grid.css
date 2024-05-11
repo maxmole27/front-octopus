@@ -2,15 +2,9 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .grid > div {
-  background-color: var(--purple-blaze-50);
-  color: #333;
-  font-size: 2rem;
-  display: flex;
-  justify-content: center;
 }
 
 /* Clases de columnas para tamaños de pantalla extra pequeños (xs) */
