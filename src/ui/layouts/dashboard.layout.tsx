@@ -7,7 +7,6 @@ import Subheader from '../components/subheader/subheader'
 function DashboardLayout() {
   return (
     <div>
-      
       <div className='sidebar_wrapper'>
         <Sidebar />
       </div>
