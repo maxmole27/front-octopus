@@ -1,3 +1,11 @@
+.heading {
+  font-family: 'Anek Devanagari', Arial, serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--aurus-100);
+  margin: .5rem 0 2rem 0;
+}
+
 .heading--h1 {
   font-size: 3rem;
 }

@@ -3,6 +3,10 @@
 @import url('./styles/button.css');
 @import url('./styles/select-button.css');
 
+* {
+  box-sizing: border-box;
+}
+
 :root {
   font-family: "Space Grotesk", Arial, serif;
   line-height: 1.5;

@@ -1,0 +1,44 @@
+.system-card {
+  background: linear-gradient(180deg, #261E2A 0%, #3C2B44 100%);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  width: 100%;
+}
+
+.system-card__icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.system-card__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  width: 100%;
+  h3 {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.system-card__image {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.system-card__actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
