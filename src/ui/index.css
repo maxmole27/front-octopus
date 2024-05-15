@@ -2,6 +2,8 @@
 @import url('./styles/grid.css');
 @import url('./styles/button.css');
 @import url('./styles/select-button.css');
+@import url('./styles/input.css');
+@import url('./styles/input-switch.css');
 
 * {
   box-sizing: border-box;
@@ -36,4 +38,9 @@ p, h1, h2, h3, h4, h5, h6 {
 
 #theme-light {
   background-color: var(--grayscale-100);
+}
+
+.form-element {
+  display: flex;
+  flex-direction: column;
 }

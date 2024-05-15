@@ -2,7 +2,7 @@ import './heading.css'
 
 type Levels = 1 | 2 | 3 | 4 | 5 | 6
 
-type HeadingProps = React.HTMLProps<HTMLHeadingElement> & {
+export type HeadingProps = React.HTMLProps<HTMLHeadingElement> & {
   children: React.ReactNode
   level: Levels
 }

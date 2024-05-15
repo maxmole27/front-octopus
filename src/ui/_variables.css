@@ -1,3 +1,4 @@
+
 :root {
   --purple-blaze-50: #E9DFEB;
   --purple-blaze-100: #A490AB;
@@ -9,6 +10,7 @@
   --purple-blaze-b: #4F355A;
   --purple-blaze-c: #8A6A98;
   --purple-blaze-d: #957BA0;
+  --purple-blaze-e: #56475D;
 
   --grayscale-50: #FFFFFF;
   --grayscale-100: #FAFAFA;
@@ -30,6 +32,10 @@
   --red-tomato-300: #B56D71;
   --red-tomato-400: #7F4C4F;
   --red-tomato-500: #583235;
+
+  --col-success-300: #5A866C;
+  --col-success-200: #71A586;
+  --col-success-100: #CCDFD3;
 
   --breakpoint-xs: 576px;
   --breakpoint-s: 768px;

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import '@ui/index.css'
+import 'primeicons/primeicons.css'
 import { Router } from './routes'
 
 

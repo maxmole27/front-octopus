@@ -1,12 +1,24 @@
 .p-button {
   background-color: var(--purple-blaze-200);
   border: 0;
+  color: var(--grayscale-50);
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 1.1rem;
   padding: 10px;
   transition: .1s ease-in;
+  border-radius: 4px;
+  font-weight: 600;
   &:hover {
     background-color: var(--purple-blaze-300);
   }
   &:disabled {
     opacity: .6;
+  }
+}
+
+.p-button-success {
+  background-color: var(--col-success-200);
+  &:hover {
+    background-color: var(--col-success-300);
   }
 }

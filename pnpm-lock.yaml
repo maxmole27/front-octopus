@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  primeicons:
+    specifier: ^7.0.0
+    version: 7.0.0
   primereact:
     specifier: ^10.6.5
     version: 10.6.5(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1)
@@ -46,6 +49,9 @@ devDependencies:
   eslint-plugin-react-refresh:
     specifier: ^0.4.6
     version: 0.4.6(eslint@8.57.0)
+  oxlint:
+    specifier: ^0.3.4
+    version: 0.3.4
   typescript:
     specifier: ^5.2.2
     version: 5.4.5
@@ -601,6 +607,70 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
     dev: true
+
+  /@oxlint/darwin-arm64@0.3.4:
+    resolution: {integrity: sha512-MRoL9iN981B0gXRSHYlXu4NRqgObtl6JaHzOJemmOTnj3H7T9zO7V47+bQk7bWARKClRN7Fzy9IuDFPDqNneTQ==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/darwin-x64@0.3.4:
+    resolution: {integrity: sha512-G+GZhDRgrKPRlccIsaXTLlJsdcI+VRgeqMY9kQsWP0GKs3kMkE+oMXIP1/W7rrCLFKEvPDhTEVzWrlnO1sdh1g==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/linux-arm64-gnu@0.3.4:
+    resolution: {integrity: sha512-zWrWLxK1itpFxZBffpT+wskBVmKotaYLmtBvIgr/TrPCsxXQE5Ofvh8/siTds8Q5rhgCAEEdwPijJoNotK8lQQ==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/linux-arm64-musl@0.3.4:
+    resolution: {integrity: sha512-aDKg7Q/YYmhA7p29FaOUGkCd6jAZppEdsAM4N+p6+fnL/ZUV/HBQ2GIqGYIH2yCc1oWk7N5CdtrGvMLeR21E6w==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/linux-x64-gnu@0.3.4:
+    resolution: {integrity: sha512-AVh/ddjdu+kQyeSvhOo1F/qU62StDNliBv2C43k/tspZmRej8oo8Te1wfD95jG9dOwD04/rZiCZw+eOOzxWpHw==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/linux-x64-musl@0.3.4:
+    resolution: {integrity: sha512-CEktyu/jrszF8hhwB2lyHvMoXYkW2OXvNJ+t+xndpX1FCcK5Oo1rxQuvYhNJv8u6d+aR32aNAyT7GgNhi1LPoQ==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/win32-arm64@0.3.4:
+    resolution: {integrity: sha512-BLhBnI09n+s14TKRA4w6OrUx5GTtVde2lGjdIvnb4uNL7XaD5N9HqRlLKQdRgJo7dbK9PWCoqHovRORSznOgrg==}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /@oxlint/win32-x64@0.3.4:
+    resolution: {integrity: sha512-MRLiStH88hIKHJ4+VzsD8eEmcJuNsfpzwCu7ndnBzdI7q7ujkSecNPdjxtSiNxoFTRDTJT5F48+vesXCHehwXg==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /@remix-run/router@1.16.0:
     resolution: {integrity: sha512-Quz1KOffeEf/zwkCBM3kBtH4ZoZ+pT3xIXBG4PPW/XFtDP7EGhtTiC2+gpL9GnR7+Qdet5Oa6cYSvwKYg6kN9Q==}
@@ -1644,6 +1714,21 @@ packages:
       word-wrap: 1.2.5
     dev: true
 
+  /oxlint@0.3.4:
+    resolution: {integrity: sha512-xvBvleMnsQUI33YRJT09UudNI96cvIM/QQ/LjH0a1+YyXg10PkZJt/36cwErBeHqjSXG0ErE4d0htW7zVUFnkA==}
+    engines: {node: '>=14.*'}
+    hasBin: true
+    optionalDependencies:
+      '@oxlint/darwin-arm64': 0.3.4
+      '@oxlint/darwin-x64': 0.3.4
+      '@oxlint/linux-arm64-gnu': 0.3.4
+      '@oxlint/linux-arm64-musl': 0.3.4
+      '@oxlint/linux-x64-gnu': 0.3.4
+      '@oxlint/linux-x64-musl': 0.3.4
+      '@oxlint/win32-arm64': 0.3.4
+      '@oxlint/win32-x64': 0.3.4
+    dev: true
+
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
@@ -1707,6 +1792,10 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
     dev: true
+
+  /primeicons@7.0.0:
+    resolution: {integrity: sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==}
+    dev: false
 
   /primereact@10.6.5(@types/react@18.3.1)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-YbdvyIRIGSfZVhtIbltizUISBuXVXBn2S4/491xdDJLrxohjjf0uIogu+/sSKRBVVT17b6zFEwARTvc9yUA7tQ==}

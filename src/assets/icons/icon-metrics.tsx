@@ -6,7 +6,7 @@ export const IconMetrics = ({ color = "#F4EDD2" }: IconProps) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_200_280)">
+    <g clipPath="url(#clip0_200_280)">
       <path
         d="M25.6667 5.5V12.8333C25.6667 13.3196 25.8599 13.7859 26.2037 14.1297C26.5475 14.4735 27.0139 14.6667 27.5001 14.6667H34.8334"
         stroke={color}

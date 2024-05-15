@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import image from "@assets/system-lbtennis.png"
 import './system-card.css'
-import { IconDeleteSystems, IconListSystems, IconMetricsSystem } from "@/assets/system-manager-icons"
+import { IconDeleteSystems, IconEditSystems, IconListSystems, IconMetricsSystem } from "@/features/system-manager/system-manager-icons"
 
 function SystemCard() {
   return (
@@ -15,7 +15,7 @@ function SystemCard() {
       <section className="system-card__actions">
         <Link to="/systems-manager/systems/1"><IconListSystems /></Link>
         <Link to="/systems-manager/systems/1/metrics"><IconMetricsSystem /></Link>
-        <Link to="/systems-manager/systems/1/edit"><IconListSystems /></Link>
+        <Link to="/systems-manager/systems/1/edit"><IconEditSystems /></Link>
         <Link to="/systems-manager/systems/1/delete"><IconDeleteSystems /></Link>
       </section>
     </article>

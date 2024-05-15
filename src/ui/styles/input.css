@@ -1,0 +1,15 @@
+.p-inputtext {
+  background-color: var(--purple-blaze-e);
+  border: 1px solid var(--purple-blaze-200);
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  padding: .5rem;
+  outline-color: var(--purple-blaze-100);
+  transition: var(--transition) ;
+}
+
+.p-inputtext:focus {
+  outline: 1px solid var(--purple-blaze-50);
+}
