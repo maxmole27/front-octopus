@@ -4,6 +4,7 @@
 @import url('./styles/select-button.css');
 @import url('./styles/input.css');
 @import url('./styles/input-switch.css');
+@import url('./styles/dropdown.css');
 
 * {
   box-sizing: border-box;

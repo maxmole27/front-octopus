@@ -1,25 +1,52 @@
+import { useState } from "react"
+import { useForm, Controller } from "react-hook-form"
 import Heading from "@/ui/components/heading/heading"
 import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
 import { Button } from 'primereact/button'
 import { InputSwitch } from 'primereact/inputswitch'
+import { Dropdown } from 'primereact/dropdown'
+
 import FormLabel from "@/ui/components/form-label/form-label"
 import FormSeparator from "@/ui/components/form-separator/form-separator"
-import { useState } from "react"
 
 
 function FormCreateSystem(){
   const [checked, setChecked] = useState(false)
+
+  //react hook form
+  const { register, handleSubmit, control } = useForm()
+
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+
+  const bookies = [
+    { name: 'Bet365', code: 'B365' },
+    { name: 'Pinnacle', code: 'PIN' },
+    { name: 'Betway', code: 'BWY' },
+    { name: '888sport', code: '888' },
+    { name: 'Betinasia', code: 'BIA' }
+  ]
+
+  const sports = [
+    { name: 'Soccer', code: 'SOCCER' },
+    { name: 'Basketball', code: 'BASKETBALL' },
+    { name: 'Tennis', code: 'TENNIS' },
+    { name: 'Hockey', code: 'HOCKEY' },
+    { name: 'Baseball', code: 'BASEBALL' }
+  ]
+
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Heading level={2}>
         Create New System
       </Heading>
-      <form>
+      <div>
         <div className="grid">
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
             <FormLabel htmlFor="system-name">System Name</FormLabel>
-            <InputText placeholder="MyNew System" name="system-name" />
+            <InputText placeholder="MyNew System" {...register('system-name')} />
           </div>
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
             <FormLabel htmlFor="system-profile-image">Profile Image</FormLabel>
@@ -50,21 +77,43 @@ function FormCreateSystem(){
           </div>
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
             <FormLabel htmlFor="system-default-odds">Bookie by Default</FormLabel>
-            <InputText placeholder="Bet365" name="system-default-odds" />
+            <Controller
+              name="system-default-odds"
+              control={control}
+              render={({ field }) => (
+                <Dropdown 
+                  placeholder="Select a Bookie" 
+                  options={bookies} 
+                  optionLabel="name" 
+                  {...field} 
+                />
+              )}
+            />
           </div>
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
             <FormLabel htmlFor="system-default-profit">Sport by Default</FormLabel>
-            <InputText placeholder="100" name="system-default-profit" />
+            <Controller
+              name="system-default-sports"
+              control={control}
+              render={({ field }) => (
+                <Dropdown 
+                  placeholder="Select a Sport" 
+                  options={sports} 
+                  optionLabel="name" 
+                  {...field} 
+                />
+              )}
+            />
           </div>
         </div>
         <div className="grid">
           <div className="col-xs-12" style={{ margin: '2rem 0'}}>
-            <Button label="Create System" severity="success" />
+            <Button label="Create System" severity="success" type="submit" />
           </div>
         </div>
-      </form>
+      </div>
 
-    </div>
+    </form>
   )
 }
 
