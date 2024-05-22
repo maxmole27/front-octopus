@@ -14,7 +14,7 @@
 }
 
 .p-dropdown-items {
-  border-radius: 4px;
+  border-radius: var(--border-radius-box);
   overflow: hidden;
   margin-top: 2px;
 }
@@ -35,4 +35,20 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.p-dropdown-filter {
+  padding: 5px;
+  background-color: var(--purple-blaze-500);
+  border-bottom: 1px dotted var(--purple-blaze-400);
+  position: relative;
+}
+
+.p-dropdown-item.p-focus {
+  background-color: var(--purple-blaze-100);
+}
+
+.p-dropdown-filter-icon {
+  position: absolute;
+  right: 5px;
 }

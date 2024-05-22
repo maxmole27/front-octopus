@@ -5,13 +5,14 @@
 @import url('./styles/input.css');
 @import url('./styles/input-switch.css');
 @import url('./styles/dropdown.css');
+@import url('./styles/file-upload.css');
 
 * {
   box-sizing: border-box;
 }
 
 :root {
-  font-family: "Space Grotesk", Arial, serif;
+  font-family: "Radio Canada Big", Arial, serif;
   line-height: 1.5;
   font-weight: 400;
 

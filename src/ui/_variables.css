@@ -37,6 +37,14 @@
   --col-success-200: #71A586;
   --col-success-100: #CCDFD3;
 
+  --ice-blue-50: #c0fffb;
+  --ice-blue-100: #b2fffa;
+  --ice-blue-200: #97EDE7;
+  --ice-blue-300: #7fcfc9;
+  --ice-blue-400: #4DB9C8;
+  --ice-blue-500: #2D9CAE;
+
+
   --breakpoint-xs: 576px;
   --breakpoint-s: 768px;
   --breakpoint-m: 992px;
@@ -46,4 +54,6 @@
   --header-height: 60px;
 
   --transition: 0.15s ease-in-out;
+
+  --border-radius-box: 4px;
 }

@@ -1,7 +1,7 @@
 .p-inputtext {
   background-color: var(--purple-blaze-e);
   border: 1px solid var(--purple-blaze-200);
-  border-radius: 4px;
+  border-radius: var(--border-radius-box);
   font-size: 1.1rem;
   font-weight: 500;
   color: white;
