@@ -1,4 +1,4 @@
-export const IconMetrics = ({ color = "#F4EDD2" }: IconProps) => (
+export const IconMetrics = ({ color = '#F4EDD2' }: IconProps) => (
   <svg
     width="44"
     height="44"

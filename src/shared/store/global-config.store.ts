@@ -10,11 +10,11 @@ export const useGlobalConfigStore = create(
   persist<GlobalConfigProps>(
     (set) => ({
       theme: 'light',
-      setTheme: (theme: 'light' | 'dark') => set({ theme }),
+      setTheme: (theme: 'light' | 'dark') => set({ theme })
     }),
     {
       name: 'global-config',
-      storage: createJSONStorage(() => localStorage) ,
+      storage: createJSONStorage(() => localStorage)
     }
   )
 )

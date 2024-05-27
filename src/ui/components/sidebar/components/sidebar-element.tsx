@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
-import { Link } from "react-router-dom"
+import { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import './sidebar-element.css'
 
 interface SidebarElementProps {
@@ -7,7 +7,7 @@ interface SidebarElementProps {
   children: ReactNode;
 }
 
-function SidebarElement({ url, children}: SidebarElementProps) {
+function SidebarElement ({ url, children }: SidebarElementProps) {
   return (
     <li>
       <Link to={url} className="sidebar-element">

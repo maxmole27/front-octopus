@@ -5,7 +5,7 @@ import { IconSystems } from '@/assets/icons/icon-systems'
 import { IconMetrics } from '@/assets/icons/icon-metrics'
 import { IconSettings } from '@/assets/icons/icon-settings'
 
-function Sidebar() {
+function Sidebar () {
   return (
     <aside className='sidebar'>
       <nav>

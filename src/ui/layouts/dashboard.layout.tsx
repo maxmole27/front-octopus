@@ -4,7 +4,7 @@ import './dashboard.css'
 import Header from '@components/header/header'
 import Subheader from '../components/subheader/subheader'
 
-function DashboardLayout() {
+function DashboardLayout () {
   return (
     <div>
       <div className='sidebar_wrapper'>

@@ -1,87 +1,144 @@
-import { useState } from "react"
-import { useForm, Controller } from "react-hook-form"
-import Heading from "@/ui/components/heading/heading"
+import { useState } from 'react'
+import { useForm, Controller, FieldValues } from 'react-hook-form'
+import { useMutation, useQuery } from '@tanstack/react-query'
+
 import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
 import { Button } from 'primereact/button'
 import { InputSwitch } from 'primereact/inputswitch'
 import { Dropdown } from 'primereact/dropdown'
+import { Message } from 'primereact/message'
 import { FileUpload, FileUploadUploadEvent } from 'primereact/fileupload'
+import Heading from '@/ui/components/heading/heading'
+import FormLabel from '@/ui/components/form-label/form-label'
+import FormSeparator from '@/ui/components/form-separator/form-separator'
 
-import FormLabel from "@/ui/components/form-label/form-label"
-import FormSeparator from "@/ui/components/form-separator/form-separator"
-import { handleOnUpload } from "@/shared/utils/upload.utils"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { handleOnUpload } from '@/shared/utils/upload.utils'
+import { createSystemTransformer } from '../services/system.transformer'
+import { createSystemService } from '../services/system.service'
+import { createSchema } from './form-create-resolver'
 
+import rawBookiesService from '@/features/common/bookies/bookies.service'
+import rawSportsService from '@/features/common/sports/sports.service'
 
-function FormCreateSystem(){
+function FormCreateSystem () {
   const [isDisabledForm, setIsDisabledForm] = useState(false)
 
-  const { register, handleSubmit, control, setValue } = useForm()
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors }
+  } = useForm({
+    resolver: zodResolver(createSchema)
+  })
 
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
+  const { data: bookiesData, isLoading: isLoadingBookies } = useQuery({
+    queryKey: ['bookies'],
+    queryFn: () => rawBookiesService()
+  })
 
-  const bookies = [
-    { name: 'Bet365', code: 'B365' },
-    { name: 'Pinnacle', code: 'PIN' },
-    { name: 'Betway', code: 'BWY' },
-    { name: '888sport', code: '888' },
-    { name: 'Betinasia', code: 'BIA' }
-  ]
+  const { data: sportsData, isLoading: isLoadingSports } = useQuery({
+    queryKey: ['sports'],
+    queryFn: () => rawSportsService()
+  })
 
-  const sports = [
-    { name: 'Soccer', code: 'SOCCER' },
-    { name: 'Basketball', code: 'BASKETBALL' },
-    { name: 'Tennis', code: 'TENNIS' },
-    { name: 'Hockey', code: 'HOCKEY' },
-    { name: 'Baseball', code: 'BASEBALL' }
-  ]
-
-  const onUpload = (response: FileUploadUploadEvent) => {
-    const res = handleOnUpload(response)
-    setValue('system-profile-image', res?.filename)
+  const { mutate: mutateSystem } = useMutation({
+    mutationKey: ['systems'],
+    mutationFn: (newSystem: FormSystemCreate) => createSystemService(newSystem)
+  })
+  const onUpload = async (response: FileUploadUploadEvent) => {
+    const res = await handleOnUpload(response)
+    setValue('systemProfileImage', res?.filename)
     setIsDisabledForm(false)
   }
 
+  const onSubmit = (data: FieldValues) => {
+    console.log('aaaa', data)
+    const system = data as FormSystemRequest
+    const formattedData = createSystemTransformer(system)
+    mutateSystem(formattedData)
+  }
+
+  if (isLoadingBookies && isLoadingSports) return <div>Loading...</div>
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading level={2}>
-        Create New System
-      </Heading>
+      <Heading level={2}>Create New System</Heading>
       <div>
         <div className="grid">
           <div className="col-xs-12 col-s-12 col-l-4 form-element">
-            <FormLabel htmlFor="system-name">System Name</FormLabel>
-            <InputText placeholder="MyNew System" {...register('system-name')} />
+            <FormLabel htmlFor="systemName">System Name</FormLabel>
+            <InputText placeholder="MyNew System" {...register('systemName')} />
+            {errors.systemName?.message && (
+              <Message
+                severity="info"
+                text={errors.systemName?.message as string}
+              />
+            )}
           </div>
-         
+
           <div className="col-xs-12 col-s-12 col-l-8 form-element"></div>
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
-            <FormLabel htmlFor="system-initial-bankroll">Initial Bankroll</FormLabel>
+            <FormLabel htmlFor="systemInitialBankroll">
+              Initial Bankroll
+            </FormLabel>
             <Controller
-              name="system-currency"
+              name="systemInitialBankroll"
               control={control}
               render={({ field }) => {
+                const { onChange, onBlur, value, ref } = field
                 return (
-                  <InputNumber placeholder="1000" {...field} value={field?.value?.value} />
-                )}
-              }
+                  <InputNumber
+                    placeholder="1000"
+                    value={value?.value}
+                    onChange={(e) => onChange(e.value)}
+                    onBlur={onBlur}
+                    ref={ref}
+                  />
+                )
+              }}
             />
-            
+            {errors.systemInitialBankroll?.message && (
+              <Message
+                severity="info"
+                text={errors.systemInitialBankroll?.message as string}
+              />
+            )}
           </div>
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
-            <FormLabel htmlFor="system-description"> Description (optional) </FormLabel>
-            <InputText placeholder="My Amazing System Flat stake" {...register('system-description')} />
+            <FormLabel htmlFor="systemDescription">
+              {' '}
+              Description (optional){' '}
+            </FormLabel>
+            <InputText
+              placeholder="My Amazing System Flat stake"
+              {...register('systemDescription')}
+            />
+
+            {errors.systemDescription?.message && (
+              <Message
+                severity="info"
+                text={errors.systemDescription?.message as string}
+              />
+            )}
           </div>
           <div className="col-xs-12 col-s-6 col-l-2 form-element">
-            <FormLabel htmlFor="system-is-backtesting"> Is Backtesting? </FormLabel>
-            
+            <FormLabel htmlFor="systemIsBacktesting">
+              {' '}
+              Is Backtesting?{' '}
+            </FormLabel>
+
             <Controller
-              name="system-is-backtesting"
+              name="systemIsBacktesting"
               control={control}
               render={({ field }) => (
-                <InputSwitch checked={field.value} onChange={(e) => field.onChange(e.value)} />
+                <InputSwitch
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.value)}
+                />
               )}
             />
           </div>
@@ -93,72 +150,105 @@ function FormCreateSystem(){
         </div>
         <div className="grid">
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
-            <FormLabel htmlFor="system-default-stake">Stake by Default</FormLabel>
-            <Controller 
-              name="system-default-stake"
-              control={control}
-              render={({ field }) => (
-                <InputNumber placeholder="100" {...field} value={field?.value?.value} />
-                
-              )}
-            />
-          </div>
-          <div className="col-xs-12 col-s-6 col-l-4 form-element">
-            <FormLabel htmlFor="system-default-bookie">Bookie by Default</FormLabel>
+            <FormLabel htmlFor="systemDefaultStake">Stake by Default</FormLabel>
             <Controller
-              name="system-default-bookie"
+              name="systemDefaultStake"
               control={control}
               render={({ field }) => (
-                <Dropdown 
-                  placeholder="Select a Bookie" 
-                  options={bookies} 
-                  optionLabel="name" 
-                  {...field} 
+                <InputNumber
+                  placeholder="100"
+                  {...field}
+                  value={field?.value?.value}
                 />
               )}
             />
+            {errors.systemDefaultStake?.message && (
+              <Message
+                severity="info"
+                text={errors.systemDefaultStake?.message as string}
+              />
+            )}
           </div>
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
-            <FormLabel htmlFor="system-default-profit">Sport by Default</FormLabel>
+            <FormLabel htmlFor="systemDefaultBookie">
+              Bookie by Default
+            </FormLabel>
             <Controller
-              name="system-default-sports"
+              name="systemDefaultBookie"
               control={control}
               render={({ field }) => (
-                <Dropdown 
-                  placeholder="Select a Sport" 
-                  options={sports} 
-                  optionLabel="name" 
-                  filter
-                  {...field} 
+                <Dropdown
+                  placeholder="Select a Bookie"
+                  options={bookiesData}
+                  optionLabel="Name"
+                  {...field}
                 />
               )}
             />
+            {errors.systemDefaultBookie?.message && (
+              <Message
+                severity="info"
+                text={errors.systemDefaultBookie?.message as string}
+              />
+            )}
+          </div>
+          <div className="col-xs-12 col-s-6 col-l-4 form-element">
+            <FormLabel htmlFor="systemDefaultSports">
+              Sport by Default
+            </FormLabel>
+            <Controller
+              name="systemDefaultSports"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Dropdown
+                    placeholder="Select a Sport"
+                    options={sportsData}
+                    optionLabel="Name"
+                    {...field}
+                  />
+                )
+              }}
+            />
+            {errors.systemDefaultSports?.message && (
+              <Message
+                severity="info"
+                text={errors.systemDefaultSports?.message as string}
+              />
+            )}
           </div>
           <div className="col-xs-12 col-s-12 col-l-4 form-element">
-            <FormLabel htmlFor="system-profile-image">System Image</FormLabel>
-            <div className="form-element" style={{display: 'flex', position: 'relative', width: '100%'}} >
-              <FileUpload 
-                  accept="image/*" 
-                  auto 
-                  chooseLabel={"Browse Image"}
-                  maxFileSize={1000000} 
-                  mode="advanced" 
-                  name="demo" 
-                  onUpload={onUpload} 
-                  onProgress={() => setIsDisabledForm(true)}
-                  url={`${import.meta.env.VITE_API_BASE_URL}/upload`}
-                />
+            <FormLabel htmlFor="systemProfileImage">System Image</FormLabel>
+            <div
+              className="form-element"
+              style={{ display: 'flex', position: 'relative', width: '100%' }}
+            >
+              <FileUpload
+                accept="image/*"
+                auto
+                chooseLabel={'Browse Image'}
+                maxFileSize={10000000}
+                mode="advanced"
+                name="demo"
+                onUpload={onUpload}
+                onProgress={() => setIsDisabledForm(true)}
+                url={`${import.meta.env.VITE_API_BASE_URL}/upload`}
+              />
             </div>
           </div>
         </div>
-        
+
         <div className="grid">
-          <div className="col-xs-12" style={{ margin: '2rem 0'}}>
-            <Button loading={true} label="Create System" severity="success" type="submit" disabled={isDisabledForm} />
+          <div className="col-xs-12" style={{ margin: '2rem 0' }}>
+            <Button
+              label="Create System"
+              severity="success"
+              type="submit"
+              loading={isDisabledForm}
+            />
           </div>
         </div>
       </div>
-
     </form>
   )
 }

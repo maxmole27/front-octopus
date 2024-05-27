@@ -4,9 +4,9 @@ import { useGlobalConfigStore } from '@/shared/store/global-config.store'
 import { MoonIcon } from '@/ui/icons/moon-icon'
 import { SunIcon } from '@/ui/icons/sun-icon'
 
-function ThemeChanger() {
-    const themeValue = useGlobalConfigStore((state) => state.theme)
-    const setTheme = useGlobalConfigStore((state) => state.setTheme)
+function ThemeChanger () {
+  const themeValue = useGlobalConfigStore((state) => state.theme)
+  const setTheme = useGlobalConfigStore((state) => state.setTheme)
 
   return (
     <div className="theme-changer">

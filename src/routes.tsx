@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import DashboardLayout from "@ui/layouts/dashboard.layout"
-import Dashboard from "@features/dashboard/dashboard"
-import SystemManager from "@features/system-manager/system-manager"
-import FormCreateSystem from "./features/system-manager/create/form-create-system"
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import DashboardLayout from '@ui/layouts/dashboard.layout'
+import Dashboard from '@features/dashboard/dashboard'
+import SystemManager from '@features/system-manager/system-manager'
+import FormCreateSystem from './features/system-manager/create/form-create-system'
 
 export const Router = () => {
   return (

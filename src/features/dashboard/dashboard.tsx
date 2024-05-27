@@ -1,7 +1,7 @@
-import Heading from "@/ui/components/heading/heading"
-import { useEffect } from "react"
+import Heading from '@/ui/components/heading/heading'
+import { useEffect } from 'react'
 
-function Dashboard() {
+function Dashboard () {
   useEffect(() => {
     console.log(import.meta.env.VITE_API_BASE_URL)
   }, [])

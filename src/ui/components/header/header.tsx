@@ -2,7 +2,7 @@ import ThemeChanger from '../theme-changer/theme-changer'
 import './header.css'
 import logo from '@assets/logo.png'
 
-function Header() {
+function Header () {
   return (
     <header className="header">
       <div className='grid'>
