@@ -18,8 +18,9 @@ export function createSystemService (newSystem: FormSystemCreate) {
     })
 }
 
-export function getSystemsService () {
-  return fetch(`${import.meta.env.VITE_API_BASE_URL}/systems`)
+export function getSystemsService ({ pageParam }: { pageParam: number }) {
+  console.log('pageParam', pageParam)
+  return fetch(`${import.meta.env.VITE_API_BASE_URL}/systems?page=${pageParam}`)
     .then(response => response.json())
     .catch(error => console.error('Error:', error))
 }

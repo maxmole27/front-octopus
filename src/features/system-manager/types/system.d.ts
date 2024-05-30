@@ -41,3 +41,9 @@ interface FormSystemCreate {
   SportId: string | number
   BookieId: string | number
 }
+
+interface SystemListDataResponse {
+  page: number
+  pageSize: number
+  systems: SystemResponse[]
+}
