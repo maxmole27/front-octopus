@@ -6,8 +6,16 @@ export function createSystemService (newSystem: FormSystemCreate) {
     },
     body: JSON.stringify(newSystem)
   }).then(response => response.json())
-    .then(data => console.log('Success:', data))
-    .catch(error => console.error('Error:', error))
+    .then(data => {
+      if (data.error) {
+        throw new Error(data.error)
+      }
+      return data
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      throw new Error('Error creating system')
+    })
 }
 
 export function getSystemsService () {

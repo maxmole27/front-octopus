@@ -18,11 +18,11 @@ export const createSchema = z.object({
   })
     .min(1, { message: 'La apuesta por defecto debe ser mayor a 0' }),
 
-  systemDefaultBookie: z.string({
+  systemDefaultBookie: z.number({
     required_error: 'La casa de apuestas por defecto es requerida'
   }),
 
-  systemDefaultSports: z.string({
+  systemDefaultSports: z.number({
     required_error: 'El deporte por defecto es requerido'
   }),
 

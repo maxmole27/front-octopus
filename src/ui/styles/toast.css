@@ -1,0 +1,62 @@
+.p-toast-message {
+  border-radius: 4px;
+  padding: 10px;
+  position: relative;
+  opacity: .85;
+  width: 100%;
+  margin: 10px;
+} 
+
+.p-toast-message-content {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%; 
+}
+
+.p-toast-message-text {
+  padding-left: 10px;
+}
+
+.p-toast-summary {
+  border-bottom: 1px solid rgba(255,255,255,.2);
+  color: var(--aurus-100);
+  font-weight: bold;
+  display: block;
+  width: 100%;
+}
+
+.p-toast-icon-close {
+  color: var(--aurus-100);
+  background-color: var(--grayscale-500);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px; 
+  right: 5px;
+  padding: 4px;
+  &:hover {
+  background-color: var(--grayscale-400);
+  }
+}
+
+/* variants */
+
+.p-toast-message-info {
+  background: linear-gradient(90deg, var(--ice-blue-400) 0%, var(--ice-blue-500) 100%);
+  border-left: 5px solid var(--ice-blue-100);
+}
+
+.p-toast-message-success {
+  background: linear-gradient(90deg, var(--col-success-300) 0%, var(--col-success-200) 100%);
+  border-left: 5px solid var(--col-success-100);
+}
+
+.p-toast-message-error {
+  background: linear-gradient(90deg, var(--red-tomato-300) 0%, var(--red-tomato-200) 100%);
+  border-left: 5px solid var(--red-tomato-50);
+}
+
+.p-toast-message-warn {
+  background: linear-gradient(90deg, var(--aurus-400) 0%, var(--aurus-300) 100%);
+  border-left: 5px solid var(--aurus-50);
+}

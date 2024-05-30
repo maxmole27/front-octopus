@@ -3,10 +3,10 @@ export function createSystemTransformer (request: FormSystemRequest): FormSystem
     Name: request.systemName,
     Description: request.systemDescription,
     ImageUrl: request.systemProfileImage,
-    InitialBankroll: request.systemInitialBankroll?.value,
+    InitialBankroll: request.systemInitialBankroll,
     IsBacktesting: request.systemIsBacktesting,
-    StakeByDefault: request.systemDefaultStake?.value,
-    SportId: request.systemDefaultSports?.ID,
-    BookieId: request.systemDefaultBookie?.ID
+    StakeByDefault: request.systemDefaultStake,
+    SportId: request.systemDefaultSports,
+    BookieId: request.systemDefaultBookie
   }
 }

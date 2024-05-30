@@ -24,11 +24,11 @@ interface FormSystemRequest {
   systemName: string
   systemDescription: string
   systemProfileImage: string
-  systemInitialBankroll: InputNumberProps
+  systemInitialBankroll: number
   systemIsBacktesting: boolean
-  systemDefaultStake: InputNumberProps
-  systemDefaultSports: DropdownProps
-  systemDefaultBookie: DropdownProps
+  systemDefaultStake: number
+  systemDefaultSports: number
+  systemDefaultBookie: number
 }
 
 interface FormSystemCreate {

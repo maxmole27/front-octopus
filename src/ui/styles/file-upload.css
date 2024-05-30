@@ -7,9 +7,19 @@
   margin-top: 1rem;
 }
 
+.p-fileupload-choose.p-disabled {
+  cursor: not-allowed;
+}
+
 .p-fileupload-row .p-button {
   border-radius: var(--border-radius-box);
   height: 100%;
+}
+.p-fileupload-buttonbar .p-disabled {
+  cursor: not-allowed;
+  color: #333333 !important;
+  transition: var(--transition);
+
 }
 
 .p-fileupload-row > div {
