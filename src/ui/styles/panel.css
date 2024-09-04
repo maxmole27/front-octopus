@@ -1,0 +1,16 @@
+.p-panel {
+  padding: 10px;
+}
+
+.p-panel-header {
+  background-color: var(--purple-blaze-e);
+  color: var(--ice-blue-200);
+  padding: 10px;
+}
+
+.p-panel-content {
+  background-color: var(--purple-blaze-f);
+  padding: 10px;
+  margin: 0 auto;
+}
+

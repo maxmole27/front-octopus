@@ -8,6 +8,7 @@
 @import url('./styles/file-upload.css');
 @import url('./styles/messages.css');
 @import url('./styles/toast.css');
+@import url('./styles/panel.css');
 
 * {
   box-sizing: border-box;

@@ -214,12 +214,13 @@ function FormCreateSystem () {
                 control={control}
                 render={({ field }) => {
                   const { onChange, onBlur, value, ref } = field
+                  console.log('field', field)
                   return (
                     <Dropdown
                       placeholder="Select a Bookie"
                       options={bookiesData}
-                      optionLabel="Name"
-                      optionValue="ID"
+                      optionLabel="name"
+                      optionValue="id"
                       value={value}
                       onChange={(e) => onChange(e.value)}
                       onBlur={onBlur}
@@ -248,8 +249,8 @@ function FormCreateSystem () {
                     <Dropdown
                       placeholder="Select a Sport"
                       options={sportsData}
-                      optionLabel="Name"
-                      optionValue="ID"
+                      optionLabel="name"
+                      optionValue="id"
                       value={value}
                       onChange={(e) => onChange(e.value)}
                       onBlur={onBlur}

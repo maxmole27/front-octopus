@@ -7,6 +7,7 @@ import { getSystemsService } from './services/system.service'
 import { checkLastPage } from '@/shared/utils/queries.utils'
 
 import NoPicture from '@assets/nopicture.png'
+import React from 'react'
 
 function SystemManager () {
   const {
@@ -18,9 +19,11 @@ function SystemManager () {
   } = useInfiniteQuery({
     queryKey: ['systems'],
     queryFn: getSystemsService,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => checkLastPage(lastPage)
-
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      console.log('lastPage', lastPage)
+      return checkLastPage(lastPage)
+    }
   })
 
   if (error) return <div>Error: {error.message}</div>
@@ -36,32 +39,40 @@ function SystemManager () {
         </div>
       </div>
       <div className="grid" style={{ gap: '1rem' }}>
-        {
-          systemsData?.pages.map((group) => {
-            return group.systems.map((system: SystemResponse) => (
-              <div className="col-xs-12 col-s-6 col-l-3" key={system.ID}>
+        {systemsData?.pages.map((page, i) => (
+          <React.Fragment key={i}>
+            {page.data.map((system: SystemResponse) => (
+              <div className="col-xs-12 col-s-6 col-l-3" key={system.id}>
                 <SystemCard
-                  key={`${system.ID}-${system.Name}`}
-                  id={system.ID}
-                  name={system.Name}
-                  image={system.ImageUrl ? `${import.meta.env.VITE_API_BASE_URL}/uploads/${system.ImageUrl}` : NoPicture}
+                  key={`${system.id}-${system.name}`}
+                  id={system.id}
+                  name={system.name}
+                  image={
+                    system.image_url
+                      ? `${import.meta.env.VITE_API_BASE_URL}/uploads/${
+                          system.image_url
+                        }`
+                      : NoPicture
+                  }
                 />
               </div>
-            ))
-          })
-        }
-      </div>
-      { isFetching && <div>Loading...</div>}
-      <section style={{ display: 'flex', justifyContent: 'center' }}>
-      {
-        hasNextPage && (
-          <Button label="Load More" className="p-button-outlined" onClick={() => {
-            fetchNextPage()
-          }} />
-        )
-      }
-      </section>
 
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+      {isFetching && <div>Loading...</div>}
+      <section style={{ display: 'flex', justifyContent: 'center' }}>
+        {hasNextPage && (
+          <Button
+            label="Load More"
+            className="p-button-outlined"
+            onClick={() => {
+              fetchNextPage()
+            }}
+          />
+        )}
+      </section>
     </>
   )
 }

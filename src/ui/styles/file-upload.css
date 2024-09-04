@@ -5,6 +5,7 @@
   align-items: stretch;
   justify-content: space-between;
   margin-top: 1rem;
+  width: 100%;
 }
 
 .p-fileupload-choose.p-disabled {
@@ -13,6 +14,9 @@
 
 .p-fileupload-row .p-button {
   border-radius: var(--border-radius-box);
+  top: 0;
+  position: absolute;
+  right: 0;
   height: 100%;
 }
 .p-fileupload-buttonbar .p-disabled {
@@ -25,4 +29,50 @@
 .p-fileupload-row > div {
   padding-left: 5px;
   width: 100%;
+}
+
+.custom-btn-default {
+  margin: 5px;
+}
+
+.custom-choose-btn {
+  background-color: var(--purple-blaze-500);
+  color: var(--purple-blaze-50);
+  border-radius: var(--border-radius-box);
+  transition: var(--transition);
+}
+
+.custom-upload-btn {
+  background-color: var(--col-success-200);
+  color: var(--purple-blaze-50) !important;
+  border-radius: var(--border-radius-box);
+  transition: var(--transition);
+  &:hover {
+    background-color: var(--col-success-300);
+  }
+}
+
+.p-fileupload-content {
+  position: relative;
+  padding-right: 2.5rem;
+  width: 100%;
+}
+
+.p-fileupload-row > div {
+  padding: 1rem;
+}
+.item-template {
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+}
+
+.item-template > div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.image-preview {
+  max-width: 350px;
 }
