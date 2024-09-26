@@ -6,6 +6,9 @@ export const createSchema = z.object({
   })
     .min(3, { message: 'El nombre del sistema debe tener al menos 3 caracteres' }),
 
+  systemDescription: z.string({ required_error: 'La descripción del sistema es requerida' })
+    .min(3, { message: 'La descripción del sistema debe tener al menos 3 caracteres' }),
+
   systemIsBacktesting: z.boolean(),
 
   systemInitialBankroll: z.number({

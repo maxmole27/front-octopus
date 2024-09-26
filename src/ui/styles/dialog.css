@@ -1,0 +1,33 @@
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.p-dialog {
+  position: fixed;
+  background-color: var(--purple-blaze-50);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 1rem;
+  z-index: 1001;
+  width: 80%;
+  .p-icon {
+    color: #000000;
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
+
+.p-dialog-title {
+  color: #000000;
+  font-size: 2rem;
+  font-size: 600;
+  text-align: center;
+}

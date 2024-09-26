@@ -1,12 +1,13 @@
 export function createSystemTransformer (request: FormSystemRequest): FormSystemCreate {
   return {
-    Name: request.systemName,
-    Description: request.systemDescription,
-    ImageUrl: request.systemProfileImage,
-    InitialBankroll: request.systemInitialBankroll,
-    IsBacktesting: request.systemIsBacktesting,
-    StakeByDefault: request.systemDefaultStake,
-    SportId: request.systemDefaultSports,
-    BookieId: request.systemDefaultBookie
+    name: request.systemName,
+    description: request.systemDescription,
+    image_url: request.systemProfileImage,
+    initial_bankroll: request.systemInitialBankroll,
+    is_backtesting: request.systemIsBacktesting,
+    stake_by_default: request.systemDefaultStake,
+    sport_by_default: request.systemDefaultSports,
+    bookie_by_default: request.systemDefaultBookie,
+    owner_id: request.systemOwnerId
   }
 }

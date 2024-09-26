@@ -46,17 +46,19 @@ interface FormSystemRequest {
   systemDefaultStake: number
   systemDefaultSports: number
   systemDefaultBookie: number
+  systemOwnerId: number
 }
 
 interface FormSystemCreate {
-  Name: string
-  Description: string
-  ImageUrl: string
-  InitialBankroll: number
-  IsBacktesting: boolean
-  StakeByDefault: number
-  SportId: string | number
-  BookieId: string | number
+  name: string
+  description: string
+  image_url: string
+  initial_bankroll: number
+  is_backtesting: boolean
+  stake_by_default: number
+  sport_by_default: string | number
+  bookie_by_default: string | number
+  owner_id: number
 }
 
 interface SystemListDataResponse {

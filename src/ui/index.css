@@ -9,6 +9,7 @@
 @import url('./styles/messages.css');
 @import url('./styles/toast.css');
 @import url('./styles/panel.css');
+@import url('./styles/dialog.css');
 
 * {
   box-sizing: border-box;

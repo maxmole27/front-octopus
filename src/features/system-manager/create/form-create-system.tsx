@@ -62,14 +62,16 @@ function FormCreateSystem () {
   })
   const onUpload = async (response: FileUploadUploadEvent) => {
     const res = await handleOnUpload(response)
-    setValue('systemProfileImage', res?.filename)
+    console.log('aaaa', res)
+    setValue('systemProfileImage', res?.path)
     setIsDisabledForm(false)
   }
 
   const onSubmit = (data: FieldValues) => {
     setIsDisabledForm(true)
     console.log('aaaa', data)
-    const system = data as FormSystemRequest
+    // SOLVE: Owner ID is hardcoded, it should be dynamic when login works
+    const system = { ...data, systemOwnerId: 7 } as FormSystemRequest
     const formattedData = createSystemTransformer(system)
     mutateSystem.mutate(formattedData, {
       onSuccess: () => {
@@ -279,10 +281,10 @@ function FormCreateSystem () {
                   disabled={isDisabledForm}
                   maxFileSize={10000000}
                   mode="advanced"
-                  name="demo"
+                  name="file"
                   onUpload={onUpload}
                   onProgress={() => setIsDisabledForm(true)}
-                  url={`${import.meta.env.VITE_API_BASE_URL}/upload`}
+                  url={`${import.meta.env.VITE_API_BASE_URL}/file_uploader`}
                 />
               </div>
             </div>

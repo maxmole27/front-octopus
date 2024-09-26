@@ -3,7 +3,7 @@ import { FileUploadUploadEvent } from 'primereact/fileupload'
 interface UploadResponse {
   filename: string
   message: string
-  original_filename: string
+  path: string
 }
 
 export function handleOnUpload (response: FileUploadUploadEvent) {

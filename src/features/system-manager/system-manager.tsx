@@ -21,7 +21,6 @@ function SystemManager () {
     queryFn: getSystemsService,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      console.log('lastPage', lastPage)
       return checkLastPage(lastPage)
     }
   })
@@ -49,7 +48,7 @@ function SystemManager () {
                   name={system.name}
                   image={
                     system.image_url
-                      ? `${import.meta.env.VITE_API_BASE_URL}/uploads/${
+                      ? `${import.meta.env.VITE_API_BASE_URL}/static/${
                           system.image_url
                         }`
                       : NoPicture
