@@ -19,6 +19,7 @@ export const Router = () => {
         <Route path="systems-manager/systems/:id" element={<PickList />} />
 
         <Route path="pick-manager" element={<AddPick />} />
+        <Route path="pick-manager/:pickId" element={<AddPick editMode={true} />} />
       </Route>
 
     </Routes>

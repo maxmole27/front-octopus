@@ -20,7 +20,6 @@ export function handleStatusParlay (betslip: BetslipResponse) {
     statusList.push('VOID')
     return 'VOID'
   })
-  console.log('el estatus de la apuesta es:', statusList)
   if (statusList.includes('LOST')) return 'LOST'
   if (statusList.includes('PENDING')) return 'PENDING'
   if (statusList.includes('WON') && !statusList.includes('LOST')) return 'WON'

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getBetsBySystem, getSystemById } from '../services/system.service'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { format, parseISO } from 'date-fns'
@@ -13,6 +13,7 @@ import TableFilters from '../components/table-filters/table-filters'
 import { usePickListStore } from '../store/pick-list.store'
 import { getAllLeagues, getAllParlayPicks, getAllSpecificBets, getAllSports, getAllTypeOfBets, getRealOddsParlay, handleOddsParlay, handleStatusParlay } from '@/shared/utils/pick-manager.utils'
 import { BET_STATUS } from '@/ui/constants'
+import { Button } from 'primereact/button'
 
 function PickList () {
   // const location = useLocation()
@@ -28,10 +29,12 @@ function PickList () {
     queryFn: () => getBetsBySystem({ pageParam: page, systemId: id ? parseInt(id) : 0 })
   })
 
-  console.log('systemBets', systemBets)
+  const navigate = useNavigate()
+
   const { data: system } = useQuery<SystemResponse>({
     queryKey: ['system', id],
-    queryFn: () => getSystemById(id ? parseInt(id) : 0)
+    queryFn: () => getSystemById(id ? parseInt(id) : 0),
+    enabled: !!id && parseInt(id) > 0
   })
 
   useEffect(() => {
@@ -97,6 +100,14 @@ function PickList () {
     return `${import.meta.env.VITE_API_BASE_URL}/static/${imageUrl}`
   }
 
+  function handleActions (betslip: BetslipResponse) {
+    return (
+      <div>
+        <Button className='p-button-alert' style={{ marginRight: '5px' }} onClick={() => { navigate(`/pick-manager/${betslip.id}`) }}><i className='pi pi-pen-to-square' /></Button>
+        <Button className='p-button-danger' onClick={() => console.log('Delete', betslip)}><i className='pi pi-trash' /></Button>
+      </div>
+    )
+  }
   function onPageChange (event: { first: number }) {
     setSearchParams({ page: (event.first / 2 + 1).toString() })
   }
@@ -115,6 +126,7 @@ function PickList () {
         <Column field="stake" header="Stake" body={(betslip) => handleStake(betslip)}></Column>
         <Column field="odds" header="Odds" body={(betslip) => handleOdds(betslip)}></Column>
         <Column field="status" header="Status" body={(betslip) => handleStatus(betslip)}></Column>
+        <Column field="actions" header="Actions" body={(betslip) => handleActions(betslip)}></Column>
       </DataTable>
       <Paginator first={0} rows={10} totalRecords={systemBets?.totalItems} onPageChange={onPageChange} />
     </div>

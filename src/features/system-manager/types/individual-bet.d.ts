@@ -10,6 +10,7 @@ export interface IndividualBet {
   stake: number
   status: string
   league_or_tournament: LeagueOrTournament
+  league_or_tournament_id?: number
   player_or_team1_id: number
   player_or_team2_id: number
   player_or_team1: PlayerOrTeam

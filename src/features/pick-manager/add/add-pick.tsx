@@ -15,7 +15,7 @@ import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
 import { FormPickInterface } from '../types/individual-pick'
 import { getSystemById } from '@/features/system-manager/services/system.service'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { SystemResponse } from '@/features/system-manager/types/system'
 import { createBetslipWithIndividualBets } from '@/features/common/betslips/betslip.service'
 import betslipTransformer from '@/features/common/betslips/betslip.transformer'
@@ -27,9 +27,13 @@ import './add-pick.css'
 // import { v4 as uuid } from 'uuid'
 import { Toast } from 'primereact/toast'
 import { SeverityOptions } from '@/ui/types/toast'
+import { useGetPickById } from './useGetPickById'
+import { getTournamentById } from '@/features/system-manager/services/torunaments.service'
+import { LeagueOrTournament } from '@/shared/types/league-or-tournament'
+import { PlayerOrTeam } from '@/shared/types/player-or-team'
+import { getPlayerOrTeamById } from '@/features/system-manager/services/playerOrTeams.service'
 
-function AddPick () {
-  // const selectedSystem = pickManagerStore((state) => state.selectedSystem)
+function AddPick ({ editMode = false }: { editMode?: boolean }) {
   const [isSmartBetRegisterVisible, setIsSmartBetRegisterVisible] =
     useState(false)
 
@@ -43,8 +47,12 @@ function AddPick () {
     queryFn: ({ queryKey }) => {
       const [, id] = queryKey // Extraer el id del queryKey
       return getSystemById(id as number) // Asegurar que id sea un número
-    }
+    },
+    enabled: !!id && parseInt(id) > 0
   })
+
+  // get pickId from react router dom
+  const { pickId } = useParams()
 
   const toast = useRef<Toast>(null)
 
@@ -52,6 +60,10 @@ function AddPick () {
     toast.current?.show({ severity, summary: title, detail })
   }
 
+  const { pickData } = useGetPickById(parseInt(pickId ?? '0') ?? 0)
+  const defaultValues = {
+    bookie_id: pickData?.bookie_id ?? -1
+  }
   const {
     handleSubmit,
     formState: { errors },
@@ -77,7 +89,7 @@ function AddPick () {
           odds: 0
         }
       ],
-      bookie_id: systemData?.bookie_by_default?.id ?? -1,
+      bookie_id: defaultValues.bookie_id,
       stake: systemData?.stake_by_default ?? 1,
       money_stake: systemData?.stake_by_default ?? 0
     }
@@ -98,8 +110,15 @@ function AddPick () {
   }, [systemData, getValues, setValue])
 
   useEffect(() => {
+    const newParams = new URLSearchParams(searchParams)
+
     if (!searchParams.get('system')) {
-      setSearchParams({ system: '0' })
+      newParams.set('system', '0')
+    }
+
+    // Solo actualiza los parámetros si son diferentes a los actuales
+    if (newParams.toString() !== searchParams.toString()) {
+      setSearchParams(newParams)
     }
   }, [searchParams, setSearchParams])
 
@@ -170,6 +189,60 @@ function AddPick () {
     setEnumPicks(enumPicks + 1)
   }
 
+  async function getLeagueOrTournament (id: number): Promise<LeagueOrTournament> {
+    const league = await getTournamentById(id)
+    return league
+  }
+
+  async function getPlayerOrTeam (id: number): Promise<PlayerOrTeam> {
+    const playerOrTeam = await getPlayerOrTeamById(id)
+    return playerOrTeam
+  }
+
+  useEffect(() => {
+    async function fetchAndAppendBets () {
+      if (pickData) {
+        remove()
+        setValue('bookie_id', pickData.bookie_id)
+        setValue('stake', pickData.stake)
+        setValue('money_stake', pickData.money_stake)
+
+        for (const item of pickData.individual_bets ?? []) {
+          try {
+            // Espera para obtener los datos de liga o torneo
+            const league = await getLeagueOrTournament(item.league_or_tournament_id ?? -1)
+            // Espera para obtener los datos de equipo o jugador 1
+            const playerOrTeam1 = await getPlayerOrTeam(item.player_or_team1_id ?? -1)
+            // Espera para obtener los datos de equipo o jugador 2
+            const playerOrTeam2 = await getPlayerOrTeam(item.player_or_team2_id ?? -1)
+
+            setEnumPicks((prev) => prev + 1)
+
+            append({
+              sport_id: item.sport_id,
+              player_or_team1_id: item.player_or_team1_id ?? -1,
+              player_or_team2_id: item.player_or_team2_id ?? -1,
+              league_or_tournament_id: item.league_or_tournament_id ?? -1,
+              bet_status_id: item.bet_status_id,
+              league_or_tournament_str: league?.name || 'Desconocido',
+              player_or_team1_str: playerOrTeam1?.name || 'Desconocido',
+              player_or_team2_str: playerOrTeam2?.name || 'Desconocido',
+              specific_bet: item.specific_bet,
+              type_of_bet: item.type_of_bet,
+              odds: item.odds
+            })
+          } catch (error) {
+            console.error('Error fetching data:', error)
+          }
+        }
+      }
+    }
+
+    fetchAndAppendBets()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pickData, setValue, append, remove, setEnumPicks])
+
   return (
     <div>
       <Toast ref={toast} />
@@ -177,7 +250,7 @@ function AddPick () {
         level={3}
         image={systemData?.image_url ?? 'setDefaultImage'}
       >
-        Register New Pick: {systemData?.name}{' '}
+        {editMode ? 'Edit ' : 'Register New '} Pick: {systemData?.name}{' '}
       </HeadingWithImage>
       <SmartBetRegister
         setIsVisible={(isVisible: boolean) =>

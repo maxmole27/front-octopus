@@ -28,3 +28,10 @@
     background-color: var(--aurus-400);
   }
 }
+
+.p-button-danger {
+  background-color: var(--red-tomato-400);
+  &:hover {
+    background-color: var(--red-tomato-500);
+  }
+}
