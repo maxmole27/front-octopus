@@ -1,12 +1,12 @@
 .p-inline-message {
-  background-color: var(--red-tomato-300);
-  border: 1px solid var(--red-tomato-400);
+  background-color: var(--aurus-500);
+  border: 1px solid var(--aurus-400);
   border-radius: 4px;
   color: white;
   font-weight: bold;
   text-shadow: 0 0 2px rgba(0,0,0,.5);
   display: flex;
-  margin: 4px 0;
+  margin: 5px 0;
   padding: 2px;
   justify-content: flex-start;
 }

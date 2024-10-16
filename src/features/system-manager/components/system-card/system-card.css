@@ -56,6 +56,11 @@
   }
 }
 
+.system-card__button {
+  display: flex;
+  justify-content: center;
+}
+
 @media screen and (max-width: 480px) {
   .system-card {
     padding: 1rem;

@@ -1,0 +1,19 @@
+export const BET_STATUS_WON = 1
+export const BET_STATUS_LOSE = 2
+export const BET_STATUS_PENDING = 3
+export const BET_STATUS_CANCELLED = 4
+export const BET_STATUS_VOID = 5
+export const BET_STATUS_HALF_WIN = 6
+export const BET_STATUS_HALF_LOSS = 7
+export const BET_STATUS_UNKNOWN = 8
+
+export const BET_STATUS: Record<number, string> = {
+  [BET_STATUS_WON]: 'WON',
+  [BET_STATUS_LOSE]: 'LOST',
+  [BET_STATUS_PENDING]: 'PENDING',
+  [BET_STATUS_CANCELLED]: 'CANCELLED',
+  [BET_STATUS_VOID]: 'VOID',
+  [BET_STATUS_HALF_WIN]: 'HALF WIN',
+  [BET_STATUS_HALF_LOSS]: 'HALF LOSS',
+  [BET_STATUS_UNKNOWN]: 'UNKNOWN'
+}

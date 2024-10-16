@@ -1,8 +1,22 @@
 .form-separator {
-  color: var(--aurus-100);
-  font-weight: 600;
-  font-family: 'Anek Devanagari', sans-serif;
   border-bottom: 1px solid #e0e0e0;
-  margin: 1.5rem 0;
+  color: var(--aurus-100);
+  display: flex;
+  font-family: 'Anek Devanagari', sans-serif;
+  font-weight: 600;
+  margin-bottom: .5rem;
+  margin-top: 1.5rem;
+  transition: var(--transition);
   width: 100%;
+}
+
+.form-separator__remove {
+  cursor: pointer;
+  color: var(--aurus-300);
+  margin: 0 1rem;
+  height: 32px;
+  width: 32px;
+  &:hover {
+    color: var(--aurus-100);
+  }
 }

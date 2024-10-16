@@ -40,6 +40,7 @@
   color: var(--purple-blaze-50);
   border-radius: var(--border-radius-box);
   transition: var(--transition);
+  margin: 0 auto;
 }
 
 .custom-upload-btn {
@@ -75,4 +76,19 @@
 
 .image-preview {
   max-width: 350px;
+}
+
+.p-fileupload-file-thumbnail {
+  width: 100%;
+  height: 100%;
+  max-width: 120px;
+  object-fit: cover;
+}
+
+.p-fileupload-row div[data-pc-section="details"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 3rem;
+  align-items: flex-start;
 }

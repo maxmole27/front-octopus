@@ -10,10 +10,22 @@ function Sidebar () {
     <aside className='sidebar'>
       <nav>
         <ul>
-          <SidebarElement url='/'><IconDashboard /></SidebarElement>
-          <SidebarElement url='/systems-manager'><IconSystems /></SidebarElement>
-          <SidebarElement url='/'><IconMetrics /></SidebarElement>
-          <SidebarElement url='/'><IconSettings /></SidebarElement>
+          <SidebarElement url='/'>
+            <IconDashboard />
+            <p className='linktext'>Dashboard</p>
+          </SidebarElement>
+          <SidebarElement url='/systems-manager'>
+            <IconSystems />
+            <p className='linktext'>Systems</p>
+          </SidebarElement>
+          <SidebarElement url='/'>
+            <IconMetrics />
+            <p className='linktext'>Metrics</p>
+          </SidebarElement>
+          <SidebarElement url='/'>
+            <IconSettings />
+            <p className='linktext'>Settings</p>
+          </SidebarElement>
         </ul>
       </nav>
     </aside>

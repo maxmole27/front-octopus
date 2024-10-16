@@ -1,0 +1,46 @@
+.p-paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.p-paginator-first  {
+  background-color: var(--purple-blaze-400);
+}
+
+.p-paginator-element  {
+  padding: 10px;
+  font-size: 1.2rem;
+  margin: 2px;
+  border-radius: 8px;
+
+}
+
+.p-link  {
+  color: var(--aurus-100);
+  text-decoration: none;
+
+}
+
+.p-disabled {
+  background-color: var(--purple-blaze-400);
+
+}
+
+.p-paginator-page {
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.p-highlight {
+  color: var(--aurus-200);
+  font-weight: bold;
+}
+
+.p-paginator-next, .p-paginator-last {
+  background-color: var(--purple-blaze-200);
+}

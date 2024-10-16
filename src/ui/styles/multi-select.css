@@ -1,0 +1,18 @@
+
+.p-multiselect {
+  background-color: var(--purple-blaze-c);
+  border: 1px solid var(--purple-blaze-200);
+  border-radius: var(--border-radius-box);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  padding: .3rem;
+  outline-color: var(--purple-blaze-100);
+  transition: var(--transition);
+}
+
+.p-multiselect-panel {
+  background-color: #333333;
+  border-radius: var(--border-radius-box);
+  padding: 0.5rem;
+}

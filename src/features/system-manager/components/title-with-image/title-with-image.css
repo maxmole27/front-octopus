@@ -1,0 +1,22 @@
+
+.title_with_image {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title_with_image__img {
+  background-size: cover;
+  border-radius: 50%;
+  height: 90px;
+  width: 90px;
+}
+
+.title_with_image h2 {
+  border-bottom: 1px solid var(--aurus-50);
+  color: var(--ice-blue-200); 
+  font-size: 2rem;
+  margin-left: 1rem;
+  font-weight: 400;
+  width: 100%;
+}

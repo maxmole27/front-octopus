@@ -23,6 +23,8 @@ import { createSchema } from './form-create-resolver'
 import rawBookiesService from '@/features/common/bookies/bookies.service'
 import rawSportsService from '@/features/common/sports/sports.service'
 import { useNavigate } from 'react-router-dom'
+import { FormSystemCreate, FormSystemRequest } from '../types/system'
+import { SeverityOptions } from '@/ui/types/toast'
 
 function FormCreateSystem () {
   const [isDisabledForm, setIsDisabledForm] = useState(false)
@@ -41,7 +43,6 @@ function FormCreateSystem () {
 
   const toast = useRef<Toast>(null)
 
-  type SeverityOptions = 'success' | 'info' | 'warn' | 'error' | undefined
   const show = (severity: SeverityOptions, title: string, detail: string) => {
     toast.current?.show({ severity, summary: title, detail })
   }
@@ -62,16 +63,14 @@ function FormCreateSystem () {
   })
   const onUpload = async (response: FileUploadUploadEvent) => {
     const res = await handleOnUpload(response)
-    console.log('aaaa', res)
     setValue('systemProfileImage', res?.path)
     setIsDisabledForm(false)
   }
 
   const onSubmit = (data: FieldValues) => {
     setIsDisabledForm(true)
-    console.log('aaaa', data)
-    // SOLVE: Owner ID is hardcoded, it should be dynamic when login works
-    const system = { ...data, systemOwnerId: 7 } as FormSystemRequest
+    // TODO: Owner ID is hardcoded, it should be dynamic when login works
+    const system = { ...data, systemOwnerId: 1 } as FormSystemRequest
     const formattedData = createSystemTransformer(system)
     mutateSystem.mutate(formattedData, {
       onSuccess: () => {
@@ -216,7 +215,6 @@ function FormCreateSystem () {
                 control={control}
                 render={({ field }) => {
                   const { onChange, onBlur, value, ref } = field
-                  console.log('field', field)
                   return (
                     <Dropdown
                       placeholder="Select a Bookie"

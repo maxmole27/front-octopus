@@ -1,0 +1,28 @@
+.p-datatable-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--border-radius-box);
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+.p-datatable-thead {
+  background-color: pink;
+}
+
+.p-datatable-thead th {
+  background-color: var(--ice-blue-400);
+  padding: .5rem;
+}
+
+.p-datatable-tbody tr {
+background-color: rgba(255,255,255,.12);
+}
+
+.p-datatable-tbody tr td {
+  padding: .5rem;
+}
+
+.p-datatable-table tbody tr:nth-of-type(odd) {
+background-color: rgba(255,255,255,.07);
+}

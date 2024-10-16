@@ -2,8 +2,15 @@
 .sidebar-element {
   margin-bottom: 1rem;
   display: block;
+  text-decoration: none;
   transition: var(--transition);
+  text-align: center;
   &:hover {
     transform: scale(1.1, 1.1);
+  }
+  svg {
+    width: 2.2rem;
+    height: 2.2rem;
+    margin: 0 auto;
   }
 }

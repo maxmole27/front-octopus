@@ -2,12 +2,13 @@ import './form-separator.css'
 
 interface FormSeparatorProps {
   title: string
+  onRemoveClick?: () => void
 }
 
-function FormSeparator ({ title }: FormSeparatorProps) {
+function FormSeparator ({ title, onRemoveClick }: FormSeparatorProps) {
   return (
     <div className="form-separator">
-      {title}
+          <p>{title}</p> <div className='form-separator__remove' onClick={onRemoveClick}> <i className="pi pi-times"></i> </div>
     </div>
   )
 }

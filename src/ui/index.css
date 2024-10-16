@@ -10,6 +10,10 @@
 @import url('./styles/toast.css');
 @import url('./styles/panel.css');
 @import url('./styles/dialog.css');
+@import url('./styles/datatable.css');
+@import url('./styles/paginator.css');
+@import url('./styles/calendar.css');
+@import url('./styles/multi-select.css');
 
 * {
   box-sizing: border-box;

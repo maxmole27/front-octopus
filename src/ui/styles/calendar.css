@@ -1,0 +1,36 @@
+.p-calendar {
+}
+
+.p-calendar .p-inputtext {
+  background-color: var(--purple-blaze-c);
+  border: 1px solid var(--purple-blaze-200);
+  border-radius: var(--border-radius-box);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  padding: .5rem;
+  outline-color: var(--purple-blaze-100);
+  transition: var(--transition);
+}
+
+
+.p-datepicker-group {
+  background-color: #333333;
+  border-radius: var(--border-radius-box);
+  padding: 0.5rem;
+  user-select: none;
+}
+
+.p-datepicker-calendar .p-highlight {
+  background-color: #222222;
+  color: var(--ice-blue-400);
+}
+
+.p-datepicker-calendar tbody td span{
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 1px;
+}
+
+.p-datepicker-other-month {
+  color: rgba(255, 255, 255, 0.3);
+}

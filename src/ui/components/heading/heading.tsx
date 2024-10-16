@@ -38,7 +38,7 @@ export function HeadingWithImage ({ children, level = 1, image, ...rest }: Headi
 
   return (
     <div className="heading-with-image">
-      <img src={image} alt="heading" />
+      <img src={`${import.meta.env.VITE_API_BASE_URL}/static/${image}`} alt="heading" />
       {headingList[`h${level}`]}
     </div>
   )

@@ -8,6 +8,7 @@ import { checkLastPage } from '@/shared/utils/queries.utils'
 
 import NoPicture from '@assets/nopicture.png'
 import React from 'react'
+import { SystemResponse } from './types/system'
 
 function SystemManager () {
   const {

@@ -13,3 +13,15 @@
 .p-inputtext:focus {
   outline: 1px solid var(--purple-blaze-50);
 }
+
+.table-filters .p-inputtext-variant {
+  background-color: var(--purple-blaze-c);
+  border: 1px solid var(--purple-blaze-200);
+  border-radius: var(--border-radius-box);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  padding: .4rem .3rem;
+  outline-color: var(--purple-blaze-100);
+  transition: var(--transition);
+}

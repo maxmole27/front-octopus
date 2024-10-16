@@ -1,4 +1,6 @@
-interface SystemResponse {
+import { IndividualBet } from './individual-bet'
+
+export interface SystemResponse {
   id: number;
   created_at: string;
   update_at: string;
@@ -9,15 +11,15 @@ interface SystemResponse {
   is_backtesting: boolean;
   stake_by_default: number;
   sport_id: number;
-  sport: {
+  sport_by_default?: {
     id: number;
     created_at: string;
     updated_at: string;
-    nameame: string;
+    name: string;
     description: string;
   };
   bookie_id: number;
-  bookie: {
+  bookie_by_default?: {
     id: number;
     created_at: string;
     updated_at: string;
@@ -37,7 +39,7 @@ interface SystemResponse {
   };
 }
 
-interface FormSystemRequest {
+export interface FormSystemRequest {
   systemName: string
   systemDescription: string
   systemProfileImage: string
@@ -49,23 +51,33 @@ interface FormSystemRequest {
   systemOwnerId: number
 }
 
-interface FormSystemCreate {
+export interface FormSystemCreate {
   name: string
   description: string
   image_url: string
   initial_bankroll: number
   is_backtesting: boolean
   stake_by_default: number
-  sport_by_default: string | number
-  bookie_by_default: string | number
+  sport_by_default_id: string | number
+  bookie_by_default_id: string | number
   owner_id: number
 }
 
-interface SystemListDataResponse {
+export interface SystemListDataResponse {
   currentPage: number
   totalPages: number
   totalItems: number
   data: SystemResponse[]
   message: string
   code: number
+}
+
+export interface BetslipResponse {
+  id: number
+  system_id: number
+  stake: number
+  money_stake: number
+  created_at: string
+  updated_at: string
+  individual_bets: IndividualBet[]
 }
