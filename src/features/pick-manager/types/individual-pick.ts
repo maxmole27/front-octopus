@@ -2,6 +2,7 @@ import { IndividualBetCreate } from '@/features/system-manager/types/individual-
 
 // Interface para utilizar en el formulario de picks
 export interface FormPickInterface {
+  id?: number
   picks: IndividualBetCreate[]
   bookie_id: number
   system_id: number

@@ -1,4 +1,4 @@
-// import { create } from 'zustand'
+import { create } from 'zustand'
 
 // interface SelectedSystemData {
 //   systemName: string;
@@ -6,10 +6,12 @@
 //   systemImageUrl: string;
 // }
 
-// interface PickManagerStore {
+interface PickManagerStore {
+  editCounter: number;
+  incrementEditCounter: () => void;
+}
 
-// }
-
-// export const pickManagerStore = create<PickManagerStore>((set) => ({
-
-// }))
+export const pickManagerStore = create<PickManagerStore>((set) => ({
+  editCounter: 0,
+  incrementEditCounter: () => set((state) => ({ editCounter: state.editCounter + 1 }))
+}))

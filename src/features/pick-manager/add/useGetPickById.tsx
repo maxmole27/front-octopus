@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getPickById } from '../services/getPickById'
 import { IndividualBet } from '@/features/system-manager/types/individual-bet'
+import { useEffect, useState } from 'react'
 
 interface PickData {
   bookie_id: number
@@ -9,12 +10,27 @@ interface PickData {
   individual_bets: IndividualBet[]
 }
 
-export function useGetPickById (pickId : number) {
-  const { data: pickData, isLoading: isLoadingPickData } = useQuery<PickData>({
-    queryKey: ['pickToEdit', pickId],
+export function useGetPickById (pickId : number, editCounter: number) {
+  const [pickData, setPickData] = useState<PickData | null>(null)
+  const { data, isLoading: isLoadingPickData } = useQuery<PickData>({
+    queryKey: ['pickToEdit', pickId, editCounter],
     queryFn: () => getPickById(pickId),
-    enabled: !!pickId && pickId > 0
+    enabled: !!pickId && pickId > 0,
+    staleTime: 100
   })
+
+  useEffect(() => {
+    if (data) {
+      setPickData(data)
+    }
+  }, [data])
+
+  useEffect(() => {
+    // on unmount set pickData to null
+    return () => {
+      setPickData(null)
+    }
+  }, [])
 
   return {
     pickData,

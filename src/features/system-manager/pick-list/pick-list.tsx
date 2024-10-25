@@ -103,13 +103,13 @@ function PickList () {
   function handleActions (betslip: BetslipResponse) {
     return (
       <div>
-        <Button className='p-button-alert' style={{ marginRight: '5px' }} onClick={() => { navigate(`/pick-manager/${betslip.id}`) }}><i className='pi pi-pen-to-square' /></Button>
+        <Button className='p-button-alert' style={{ marginRight: '5px' }} onClick={() => { navigate(`/pick-manager/${betslip.id}?system=${betslip.system_id}`) }}><i className='pi pi-pen-to-square' /></Button>
         <Button className='p-button-danger' onClick={() => console.log('Delete', betslip)}><i className='pi pi-trash' /></Button>
       </div>
     )
   }
   function onPageChange (event: { first: number }) {
-    setSearchParams({ page: (event.first / 2 + 1).toString() })
+    setSearchParams({ page: (event.first / 2 + 1).toString() }, { replace: true })
   }
   return (
     <div>

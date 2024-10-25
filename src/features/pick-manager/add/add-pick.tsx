@@ -17,7 +17,7 @@ import { FormPickInterface } from '../types/individual-pick'
 import { getSystemById } from '@/features/system-manager/services/system.service'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { SystemResponse } from '@/features/system-manager/types/system'
-import { createBetslipWithIndividualBets } from '@/features/common/betslips/betslip.service'
+import { createBetslipWithIndividualBets, updateBetslipWithIndidivualBets } from '@/features/common/betslips/betslip.service'
 import betslipTransformer from '@/features/common/betslips/betslip.transformer'
 import { getBetStatuses } from '../services/bet-statuses.service'
 import { IndividualBetCreate } from '@/features/system-manager/types/individual-bet'
@@ -32,11 +32,17 @@ import { getTournamentById } from '@/features/system-manager/services/torunament
 import { LeagueOrTournament } from '@/shared/types/league-or-tournament'
 import { PlayerOrTeam } from '@/shared/types/player-or-team'
 import { getPlayerOrTeamById } from '@/features/system-manager/services/playerOrTeams.service'
+import { pickManagerStore } from '../store/pick-manager.store'
 
 function AddPick ({ editMode = false }: { editMode?: boolean }) {
+  // get pickId from react router dom
+  const { pickId } = useParams()
+
   const [isSmartBetRegisterVisible, setIsSmartBetRegisterVisible] =
     useState(false)
 
+  const [isEditMode, setIsEditMode] = useState(editMode)
+  const [currentPickId, setCurrentPickId] = useState<number>(0)
   const [searchParams, setSearchParams] = useSearchParams()
   const id = searchParams.get('system')
   // to update successfully the form elements form smart bet
@@ -51,16 +57,19 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
     enabled: !!id && parseInt(id) > 0
   })
 
-  // get pickId from react router dom
-  const { pickId } = useParams()
-
   const toast = useRef<Toast>(null)
 
   const show = (severity: SeverityOptions, title: string, detail: string) => {
     toast.current?.show({ severity, summary: title, detail })
   }
+  const pms = pickManagerStore()
 
-  const { pickData } = useGetPickById(parseInt(pickId ?? '0') ?? 0)
+  useEffect(() => {
+    if (currentPickId === parseInt(pickId ?? '0')) return
+    setCurrentPickId(parseInt(pickId ?? '0'))
+  }, [pickId, currentPickId])
+
+  const { pickData } = useGetPickById(currentPickId, pms.editCounter)
   const defaultValues = {
     bookie_id: pickData?.bookie_id ?? -1
   }
@@ -101,6 +110,24 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
   })
 
   useEffect(() => {
+    // contador de renders
+    console.log('render')
+  })
+
+  useEffect(() => {
+    pms.incrementEditCounter()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (currentPickId && currentPickId > 0) {
+      setIsEditMode(true)
+    } else {
+      setIsEditMode(false)
+    }
+  }, [currentPickId])
+
+  useEffect(() => {
     if (getValues('picks.0.sport_id') === undefined && systemData) {
       setValue('picks.0.sport_id', systemData?.sport_by_default?.id ?? -1)
     }
@@ -118,21 +145,26 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
 
     // Solo actualiza los parámetros si son diferentes a los actuales
     if (newParams.toString() !== searchParams.toString()) {
-      setSearchParams(newParams)
+      setSearchParams({ ...newParams }, { replace: true })
     }
   }, [searchParams, setSearchParams])
 
-  useEffect(() => {
-    console.log('errors', errors)
-  }, [errors])
-
   const onSubmit = async (data: unknown) => {
     console.log('data', data)
-    const transformedData = betslipTransformer(data as FormPickInterface)
-    mutation.mutate(transformedData)
-    setTimeout(() => {
-      navigate('/systems-manager')
-    }, 1000)
+    if (isEditMode) {
+      console.log('soy el edit mode', data)
+      const transformedData = betslipTransformer(data as FormPickInterface)
+      editMutation.mutate({ betslipId: parseInt(pickId ?? '0') ?? 0, updatedBetslip: transformedData })
+      setTimeout(() => {
+        navigate('/systems-manager')
+      }, 1000)
+    } else {
+      const transformedData = betslipTransformer(data as FormPickInterface)
+      mutation.mutate(transformedData)
+      setTimeout(() => {
+        navigate('/systems-manager')
+      }, 1000)
+    }
   }
 
   const { data: bookiesData, isLoading: isLoadingBookies } = useQuery({
@@ -154,6 +186,14 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
     mutationFn: createBetslipWithIndividualBets,
     onSuccess () {
       show('success', 'Pick created', 'The pick was created successfully')
+      // go back with react router
+    }
+  })
+
+  const editMutation = useMutation({
+    mutationFn: updateBetslipWithIndidivualBets,
+    onSuccess () {
+      show('success', 'Pick edited', 'The pick was edited successfully')
       // go back with react router
     }
   })
@@ -200,14 +240,16 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
   }
 
   useEffect(() => {
-    async function fetchAndAppendBets () {
+    function fetchAndAppendBets () {
+      if (pickData === undefined) return
+      remove()
+      console.log('pickDataxxxxx', pickData)
       if (pickData) {
-        remove()
         setValue('bookie_id', pickData.bookie_id)
         setValue('stake', pickData.stake)
         setValue('money_stake', pickData.money_stake)
-
-        for (const item of pickData.individual_bets ?? []) {
+        pickData.individual_bets?.forEach(async (item) => {
+          console.log('item', item)
           try {
             // Espera para obtener los datos de liga o torneo
             const league = await getLeagueOrTournament(item.league_or_tournament_id ?? -1)
@@ -217,8 +259,9 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
             const playerOrTeam2 = await getPlayerOrTeam(item.player_or_team2_id ?? -1)
 
             setEnumPicks((prev) => prev + 1)
-
+            console.log('item', item)
             append({
+              id: item.id ?? undefined,
               sport_id: item.sport_id,
               player_or_team1_id: item.player_or_team1_id ?? -1,
               player_or_team2_id: item.player_or_team2_id ?? -1,
@@ -234,14 +277,14 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
           } catch (error) {
             console.error('Error fetching data:', error)
           }
-        }
+        })
       }
     }
 
     fetchAndAppendBets()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pickData, setValue, append, remove, setEnumPicks])
+  }, [pickData])
 
   return (
     <div>
@@ -250,7 +293,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
         level={3}
         image={systemData?.image_url ?? 'setDefaultImage'}
       >
-        {editMode ? 'Edit ' : 'Register New '} Pick: {systemData?.name}{' '}
+        {isEditMode ? 'Edit ' : 'Register New '} Pick: {systemData?.name}{' '}
       </HeadingWithImage>
       <SmartBetRegister
         setIsVisible={(isVisible: boolean) =>
@@ -261,6 +304,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <input type="hidden" {...register('system_id')} value={id ?? -1} />
+        <input type='hidden' {...register('id')} value={pickId ?? -1} />
         <div className="grid">
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
             <FormLabel htmlFor="bookie_id">Bookie</FormLabel>
@@ -350,7 +394,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
         <section className="header_buttons">
           <div className='btn_wrapper'>
             <Button
-              label="Agregar pick al parlay"
+              label="Add pick to parlay"
               onClick={(e) => {
                 e.preventDefault()
                 appendNewPickToParlay(e)
@@ -376,6 +420,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                   <FormSeparator title={`Pick N°${index + 1}`} onRemoveClick={() => { removePick(index) }} />
                 </div>
               </div>
+              <input type="hidden" {...register(`picks.${index}.id`)} />
               <input
                 type="hidden"
                 {...register(`picks.${index}.player_or_team1_id`)}
@@ -541,7 +586,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
           <div className='col-xs-12 form-element'>
             <Button
               type="submit"
-              label="Crear Pick"
+              label={isEditMode ? 'Edit Pick' : 'Create Pick'}
               className='p-button-success'
               style={{ maxWidth: '400px', width: '100%', margin: '30px auto' }}
             />

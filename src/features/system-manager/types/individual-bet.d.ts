@@ -21,6 +21,7 @@ export interface IndividualBet {
 }
 
 export interface IndividualBetCreate {
+  id?: number
   bet_status_id: number
   odds: number
   player_or_team1_id?: number
