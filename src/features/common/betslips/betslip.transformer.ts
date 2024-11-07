@@ -22,7 +22,7 @@ const betslipTransformer = (betslips: FormPickInterface): BetslipTransformerProp
     individual_bets: betslips.picks.map((pick) => {
       console.log('pick', pick)
       return {
-        id: pick.id ? parseInt(pick.id.toString()) : undefined,
+        id: pick.id ? parseInt(pick.id.toString()) : -1,
         bet_status_id: pick.bet_status_id ?? 3,
         event_date: new Date(),
         league_or_tournament_id: pick.league_or_tournament_id && pick.league_or_tournament_id.toString().length > 0 ? pick.league_or_tournament_id : -1,

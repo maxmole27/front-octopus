@@ -6,7 +6,7 @@ import { Column } from 'primereact/column'
 import { format, parseISO } from 'date-fns'
 import { BetslipResponse, SystemResponse } from '../types/system'
 import TitleWithImage from '../components/title-with-image/title-with-image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Paginator } from 'primereact/paginator'
 import { BetslipsResponse } from '../types/individual-bet'
 import TableFilters from '../components/table-filters/table-filters'
@@ -14,12 +14,16 @@ import { usePickListStore } from '../store/pick-list.store'
 import { getAllLeagues, getAllParlayPicks, getAllSpecificBets, getAllSports, getAllTypeOfBets, getRealOddsParlay, handleOddsParlay, handleStatusParlay } from '@/shared/utils/pick-manager.utils'
 import { BET_STATUS } from '@/ui/constants'
 import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
 
 function PickList () {
   // const location = useLocation()
   const { id } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const { filterRangeEndDate } = usePickListStore()
+  const [isModalDelete, toggleModalDelete] = useState(false)
+  const [first, setFirst] = useState(0)
+  const [rows, setRows] = useState(10)
 
   const pageParam = searchParams.get('page')
   const page = pageParam ? parseInt(pageParam) : 1
@@ -100,16 +104,22 @@ function PickList () {
     return `${import.meta.env.VITE_API_BASE_URL}/static/${imageUrl}`
   }
 
+  function handleDeleteButton () {
+    toggleModalDelete(true)
+  }
+
   function handleActions (betslip: BetslipResponse) {
     return (
       <div>
         <Button className='p-button-alert' style={{ marginRight: '5px' }} onClick={() => { navigate(`/pick-manager/${betslip.id}?system=${betslip.system_id}`) }}><i className='pi pi-pen-to-square' /></Button>
-        <Button className='p-button-danger' onClick={() => console.log('Delete', betslip)}><i className='pi pi-trash' /></Button>
+        <Button className='p-button-danger' onClick={() => handleDeleteButton()}><i className='pi pi-trash' /></Button>
       </div>
     )
   }
-  function onPageChange (event: { first: number }) {
-    setSearchParams({ page: (event.first / 2 + 1).toString() }, { replace: true })
+  function onPageChange (event: { page: number, first: number, rows: number }) {
+    setFirst(event.first)
+    setRows(event.rows)
+    setSearchParams({ page: (event.page + 1).toString() }, { replace: true })
   }
   return (
     <div>
@@ -128,7 +138,12 @@ function PickList () {
         <Column field="status" header="Status" body={(betslip) => handleStatus(betslip)}></Column>
         <Column field="actions" header="Actions" body={(betslip) => handleActions(betslip)}></Column>
       </DataTable>
-      <Paginator first={0} rows={10} totalRecords={systemBets?.totalItems} onPageChange={onPageChange} />
+      <Paginator first={first} rows={rows} totalRecords={systemBets?.totalItems} onPageChange={onPageChange} />
+      <Dialog header="Confirmation" visible={isModalDelete} style={{ width: '50vw' }} onHide={() => { toggleModalDelete(false) }}>
+        <div>Are you sure you want to delete this bet?</div>
+        <Button label="Yes" className="p-button-success" onClick={() => { toggleModalDelete(false) }} />
+        <Button label="No" onClick={() => { toggleModalDelete(false) }} />
+      </Dialog>
     </div>
   )
 }
