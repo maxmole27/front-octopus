@@ -6,22 +6,27 @@ import FormLabel from '@/ui/components/form-label/form-label'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { usePickListStore } from '../../store/pick-list.store'
+import { useQuery } from '@tanstack/react-query'
+import rawSportsService from '@/features/common/sports/sports.service'
+import { useState } from 'react'
 
 interface FiltersProps {
   dateRange: Date[] | null
-  sports: string[]
+  sports: number[]
   teamsOrPlayers: string
 }
 
 function TableFilters ({
-  refetchList,
+  refetchCounter,
+  setRefetchCounter,
   resetPage
-}: { refetchList: () => void, resetPage: () => void }) {
+}: { refetchCounter: number, setRefetchCounter: (counter: number) => void, resetPage: () => void }) {
   const {
     handleSubmit,
     formState: { errors },
     control,
-    setValue
+    setValue,
+    getValues
   } = useForm<FiltersProps>({
     defaultValues: {
       dateRange: null,
@@ -30,25 +35,39 @@ function TableFilters ({
     }
   })
 
+  const {
+    data: sports,
+    isLoading: isLoadingSports
+  } = useQuery({
+    queryKey: ['sports'],
+    queryFn: () => rawSportsService()
+  })
+
   const { setFilterRangeStartDate, setFilterRangeEndDate, setFilterSports, setFilterTeamsOrPlayers } = usePickListStore()
 
   const onSubmit = (data: FiltersProps) => {
-    const { dateRange } = data
+    console.log('data', data)
+    const { dateRange, sports } = data
     if (dateRange) {
       setFilterRangeStartDate(new Date(dateRange[0]))
       setFilterRangeEndDate(new Date(dateRange[1]))
     }
+    if (sports) {
+      setFilterSports(sports)
+    }
     resetPage()
-    refetchList()
+    setRefetchCounter(refetchCounter + 1)
+
     // setFilterSports('2021-01-01')
     // setFilterTeamsOrPlayers('2021-01-01')
   }
-  // TODO: Implement cleanFilters function
-  // function cleanFilters () {
-  //   setValue('dateRange', null)
-  //   setValue('sports', [])
-  //   setValue('teamsOrPlayers', '')
-  // }
+  function cleanFilters () {
+    setFilterRangeStartDate(null)
+    setFilterRangeEndDate(null)
+    setValue('dateRange', null)
+    setValue('sports', [])
+    setValue('teamsOrPlayers', '')
+  }
 
   return (
     <div className='table-filters'>
@@ -78,7 +97,14 @@ function TableFilters ({
                 control={control}
                 name='sports'
                 render={({ field }) => (
-                  <MultiSelect value={[]} onChange={(e) => field.onChange(e)} options={[]} optionLabel="name" placeholder="Select Sport" maxSelectedLabels={3} />
+                  <MultiSelect
+                    value={getValues('sports')}
+                    onChange={(e) => { setValue('sports', e.value) }}
+                    options={isLoadingSports ? [] : sports}
+                    optionLabel="name"
+                    optionValue='id'
+                    placeholder="Select Sport"
+                  />
                 )}
               />
             </article>
@@ -98,7 +124,19 @@ function TableFilters ({
             <div className="col-xs-4 form-element" style={{ paddingTop: '1rem' }}>
               <Button type="submit" label="Apply" className="p-button-primary" />
             </div>
-            <div className="col-xs-4 form-element" />
+            <div className="col-xs-2 form-element" />
+            <div className='col-xs-2 form-element' style={{ alignItems: 'flex-end', paddingTop: '1rem' }}>
+              <Button
+                icon="pi pi-eraser"
+                className='p-button-alert clean-button-filters'
+                onClick={(e) => {
+                  e.preventDefault()
+                  cleanFilters()
+                  console.log('aaaaaaa', getValues('dateRange'))
+                  setRefetchCounter(refetchCounter + 1)
+                }}
+              />
+            </div>
           </div>
         </form>
       </div>

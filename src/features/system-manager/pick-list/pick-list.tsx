@@ -21,7 +21,13 @@ function PickList () {
   // const location = useLocation()
   const { id } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
-  const { filterRangeEndDate, filterRangeStartDate } = usePickListStore()
+  const {
+    filterRangeEndDate,
+    filterRangeStartDate,
+    refetchCounter,
+    filterSports,
+    setRefetchCounter
+  } = usePickListStore()
   const [isModalDelete, toggleModalDelete] = useState(false)
   const [first, setFirst] = useState(0)
   const [rows, setRows] = useState(10)
@@ -29,13 +35,16 @@ function PickList () {
   const pageParam = searchParams.get('page')
   const page = pageParam ? parseInt(pageParam) : 1
 
-  const { data: systemBets, isLoading: isLoadingBets, refetch } = useQuery<BetslipsResponse>({
-    queryKey: ['system-bets', page],
+  const { data: systemBets, isLoading: isLoadingBets } = useQuery<BetslipsResponse>({
+    queryKey: ['system-bets', page, refetchCounter],
+    // stale time to refresh automatically
+    staleTime: 0,
     queryFn: () => getBetsBySystem({
       pageParam: page,
       systemId: id ? parseInt(id) : 0,
-      startDate: getYYYYMMDD(filterRangeStartDate),
-      endDate: getYYYYMMDD(filterRangeEndDate)
+      startDate: filterRangeStartDate ? getYYYYMMDD(filterRangeStartDate) : undefined,
+      endDate: filterRangeEndDate ? getYYYYMMDD(filterRangeEndDate) : undefined,
+      sports: filterSports
     })
   })
 
@@ -134,7 +143,7 @@ function PickList () {
   return (
     <div>
       <TitleWithImage title={system?.name} imageUrl={getEntireUrlImage(system?.image_url)} />
-      <TableFilters refetchList={refetch} resetPage={resetPage} />
+      <TableFilters refetchCounter={refetchCounter} setRefetchCounter={setRefetchCounter} resetPage={resetPage} />
       <DataTable value={systemBets?.data} loading={isLoadingBets}>
         <Column field="registered_data" header="Registered Date" body={(betslip) => handleRegisteredDate(betslip)}></Column>
         <Column field="event" header="Event" body={(betslip) => handleEventName(betslip)}></Column>

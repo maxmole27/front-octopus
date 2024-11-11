@@ -19,3 +19,9 @@
   position: relative;
   top: -5px;
 }
+
+.clean-button-filters {
+  display: flex;
+  max-width: 50px;
+  justify-content: center;
+}

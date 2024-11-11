@@ -5,10 +5,12 @@ interface PickListStore {
   setFilterRangeStartDate: (date: Date | null) => void
   filterRangeEndDate: Date | null
   setFilterRangeEndDate: (date: Date | null) => void
-  filterSports: string[]
-  setFilterSports: (sports: string[]) => void
+  filterSports: number[]
+  setFilterSports: (sports: number[]) => void
   filterTeamsOrPlayers: string
   setFilterTeamsOrPlayers: (teamsOrPlayers: string) => void
+  refetchCounter: number
+  setRefetchCounter: (counter: number) => void
 }
 
 export const usePickListStore = create<PickListStore>((set) => ({
@@ -19,5 +21,7 @@ export const usePickListStore = create<PickListStore>((set) => ({
   filterSports: [],
   setFilterSports: (sports) => set({ filterSports: sports }),
   filterTeamsOrPlayers: '',
-  setFilterTeamsOrPlayers: (teamsOrPlayers) => set({ filterTeamsOrPlayers: teamsOrPlayers })
+  setFilterTeamsOrPlayers: (teamsOrPlayers) => set({ filterTeamsOrPlayers: teamsOrPlayers }),
+  refetchCounter: 0,
+  setRefetchCounter: (counter) => set({ refetchCounter: counter })
 }))

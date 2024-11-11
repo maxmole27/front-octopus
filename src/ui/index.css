@@ -14,6 +14,7 @@
 @import url('./styles/paginator.css');
 @import url('./styles/calendar.css');
 @import url('./styles/multi-select.css');
+@import url('./styles/checkbox.css');
 
 * {
   box-sizing: border-box;
