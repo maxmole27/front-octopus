@@ -4,6 +4,7 @@ import { IndividualBet } from '@/features/system-manager/types/individual-bet'
 import { useEffect, useState } from 'react'
 
 interface PickData {
+  system_id: number
   bookie_id: number
   stake: number
   money_stake: number

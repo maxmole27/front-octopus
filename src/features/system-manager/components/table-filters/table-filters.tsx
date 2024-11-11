@@ -13,7 +13,10 @@ interface FiltersProps {
   teamsOrPlayers: string
 }
 
-function TableFilters () {
+function TableFilters ({
+  refetchList,
+  resetPage
+}: { refetchList: () => void, resetPage: () => void }) {
   const {
     handleSubmit,
     formState: { errors },
@@ -32,9 +35,11 @@ function TableFilters () {
   const onSubmit = (data: FiltersProps) => {
     const { dateRange } = data
     if (dateRange) {
-      setFilterRangeStartDate(dateRange[0])
-      setFilterRangeEndDate(dateRange[1])
+      setFilterRangeStartDate(new Date(dateRange[0]))
+      setFilterRangeEndDate(new Date(dateRange[1]))
     }
+    resetPage()
+    refetchList()
     // setFilterSports('2021-01-01')
     // setFilterTeamsOrPlayers('2021-01-01')
   }
@@ -60,6 +65,7 @@ function TableFilters () {
                   <Calendar
                     value={field?.value}
                     onChange={(e) => field.onChange(e.value)}
+                    dateFormat='yy-mm-dd'
                     selectionMode="range"
                     readOnlyInput
                     hideOnRangeSelection

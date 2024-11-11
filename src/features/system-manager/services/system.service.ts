@@ -32,8 +32,19 @@ export function getSystemById (id: number): Promise<SystemResponse> {
     .catch(error => console.error('Error:', error))
 }
 
-export function getBetsBySystem ({ pageParam, systemId }: { pageParam: number, systemId: number }) {
-  return fetch(`${import.meta.env.VITE_API_BASE_URL}/betslips/system/${systemId}?page=${pageParam - 1}`)
+interface IGetBetsBySystem {
+  pageParam: number
+  systemId: number
+  startDate?: string
+  endDate?: string
+}
+
+export function getBetsBySystem ({ pageParam, systemId, startDate, endDate }: IGetBetsBySystem) {
+  const searchParams = new URLSearchParams()
+  searchParams.set('page', (pageParam - 1).toString())
+  if (startDate) searchParams.set('start_date', startDate)
+  if (endDate) searchParams.set('end_date', endDate)
+  return fetch(`${import.meta.env.VITE_API_BASE_URL}/betslips/system/${systemId}?${searchParams.toString()}`)
     .then(response => response.json())
     .catch(error => console.error('Error:', error))
 }

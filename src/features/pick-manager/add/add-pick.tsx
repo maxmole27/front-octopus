@@ -22,9 +22,8 @@ import betslipTransformer from '@/features/common/betslips/betslip.transformer'
 import { getBetStatuses } from '../services/bet-statuses.service'
 import { IndividualBetCreate } from '@/features/system-manager/types/individual-bet'
 import './add-pick.css'
-// import { createSchema } from './add-pick-resolver'
-// import { zodResolver } from '@hookform/resolvers/zod'
-// import { v4 as uuid } from 'uuid'
+import { createSchema } from './add-pick-resolver'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Toast } from 'primereact/toast'
 import { SeverityOptions } from '@/ui/types/toast'
 import { useGetPickById } from './useGetPickById'
@@ -35,7 +34,6 @@ import { getPlayerOrTeamById } from '@/features/system-manager/services/playerOr
 import { pickManagerStore } from '../store/pick-manager.store'
 
 function AddPick ({ editMode = false }: { editMode?: boolean }) {
-  // get pickId from react router dom
   const { pickId } = useParams()
 
   const [isSmartBetRegisterVisible, setIsSmartBetRegisterVisible] =
@@ -44,17 +42,17 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
   const [isEditMode, setIsEditMode] = useState(editMode)
   const [currentPickId, setCurrentPickId] = useState<number>(0)
   const [searchParams, setSearchParams] = useSearchParams()
-  const id = searchParams.get('system')
-  // to update successfully the form elements form smart bet
+  const [systemId, setSystemId] = useState<number>(0)
+
   const [enumPicks, setEnumPicks] = useState<number>(0)
   const navigate = useNavigate()
   const { data: systemData } = useQuery<SystemResponse, Error>({
-    queryKey: ['system', id],
+    queryKey: ['system', systemId],
     queryFn: ({ queryKey }) => {
-      const [, id] = queryKey // Extraer el id del queryKey
-      return getSystemById(id as number) // Asegurar que id sea un número
+      const [, id] = queryKey
+      return getSystemById(id as number)
     },
-    enabled: !!id && parseInt(id) > 0
+    enabled: !!systemId && systemId > 0
   })
 
   const toast = useRef<Toast>(null)
@@ -81,7 +79,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
     getValues,
     register
   } = useForm<FormPickInterface>({
-    // resolver: zodResolver(createSchema),
+    resolver: zodResolver(createSchema),
     defaultValues: {
       picks: [
         {
@@ -100,7 +98,8 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
       ],
       bookie_id: defaultValues.bookie_id,
       stake: systemData?.stake_by_default ?? 1,
-      money_stake: systemData?.stake_by_default ?? 0
+      money_stake: systemData?.stake_by_default ?? 0,
+      system_id: systemId ?? -1
     }
   })
 
@@ -110,9 +109,10 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
   })
 
   useEffect(() => {
-    // contador de renders
-    console.log('render')
-  })
+    if (searchParams.get('system')) {
+      setSystemId(parseInt(searchParams.get('system')?.toString() ?? '0'))
+    }
+  }, [searchParams, setValue, systemId])
 
   useEffect(() => {
     pms.incrementEditCounter()
@@ -149,17 +149,16 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
     }
   }, [searchParams, setSearchParams])
 
-  const onSubmit = async (data: unknown) => {
-    console.log('data', data)
+  const onSubmit = async (data: object) => {
+    console.info('Data:', data)
     if (isEditMode) {
-      console.log('soy el edit mode', data)
       const transformedData = betslipTransformer(data as FormPickInterface)
       editMutation.mutate({ betslipId: parseInt(pickId ?? '0') ?? 0, updatedBetslip: transformedData })
       setTimeout(() => {
         navigate('/systems-manager')
       }, 1000)
     } else {
-      const transformedData = betslipTransformer(data as FormPickInterface)
+      const transformedData = betslipTransformer({ ...data, system_id: systemId } as FormPickInterface)
       mutation.mutate(transformedData)
       setTimeout(() => {
         navigate('/systems-manager')
@@ -243,13 +242,12 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
     function fetchAndAppendBets () {
       if (pickData === undefined) return
       remove()
-      console.log('pickDataxxxxx', pickData)
       if (pickData) {
         setValue('bookie_id', pickData.bookie_id)
         setValue('stake', pickData.stake)
         setValue('money_stake', pickData.money_stake)
+
         pickData.individual_bets?.forEach(async (item) => {
-          console.log('item', item)
           try {
             // Espera para obtener los datos de liga o torneo
             const league = await getLeagueOrTournament(item.league_or_tournament_id ?? -1)
@@ -259,7 +257,6 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
             const playerOrTeam2 = await getPlayerOrTeam(item.player_or_team2_id ?? -1)
 
             setEnumPicks((prev) => prev + 1)
-            console.log('item', item)
             append({
               id: item.id ?? undefined,
               sport_id: item.sport_id,
@@ -303,7 +300,6 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
         appendData={appendToSmartBet}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="hidden" {...register('system_id')} value={id ?? -1} />
         <input type='hidden' {...register('id')} value={pickId ?? -1} />
         <div className="grid">
           <div className="col-xs-12 col-s-6 col-l-4 form-element">
@@ -324,6 +320,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                     onBlur={onBlur}
                     ref={ref}
                     disabled={isLoadingBookies}
+                    id={'bookie_id'}
                   />
                 )
               }}
@@ -357,6 +354,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                         setValue('money_stake', result)
                       }
                     }}
+                    id='stake'
                   />
                 )
               }}
@@ -379,6 +377,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                     maxFractionDigits={2}
                     {...field}
                     onChange={(e) => onChange(e.value)}
+                    id='money_stake'
                   />
                 )
               }}
@@ -436,7 +435,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
 
               <div className="grid">
                 <div className="col-xs-6 col-s-6 col-l-4 form-element">
-                  <FormLabel htmlFor="sport_id">Sport</FormLabel>
+                  <FormLabel htmlFor={`picks.${index}.sport_id`}>Sport</FormLabel>
                   <Controller
                     name={`picks.${index}.sport_id`}
                     key={`picks.${index}.sport_id`}
@@ -453,6 +452,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                           onChange={(e) => onChange(e.value)}
                           onBlur={onBlur}
                           ref={ref}
+                          id={`picks.${index}.sport_id`}
                         />
                       )
                     }}
@@ -465,14 +465,18 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                   )}
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="player_or_team1_str">
+                  <FormLabel htmlFor={`picks.${index}.player_or_team1_str`} >
                     Team/Player 1
                   </FormLabel>
                   <Controller
                     name={`picks.${index}.player_or_team1_str`}
                     control={control}
                     render={({ field }) => {
-                      return <InputText placeholder="Team/Player 1" {...field} />
+                      return <InputText
+                        placeholder="Team/Player 1"
+                        {...field}
+                        id={`picks.${index}.player_or_team1_str`}
+                      />
                     }}
                   />
                   {errors?.picks?.[index]?.player_or_team1_str?.message && (
@@ -483,19 +487,31 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                   )}
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="player_or_team1_str`}">
+                  <FormLabel htmlFor={`picks.${index}.player_or_team2_str`}>
                     Team/Player 2
                   </FormLabel>
                   <Controller
                     name={`picks.${index}.player_or_team2_str`}
                     control={control}
                     render={({ field }) => {
-                      return <InputText placeholder="Team/Player 2" {...field} />
+                      return <InputText
+                        placeholder="Team/Player 2"
+                        {...field}
+                        id={`picks.${index}.player_or_team2_str`}
+                      />
                     }}
                   />
+                  {
+                    errors?.picks?.[index]?.player_or_team2_str?.message && (
+                      <Message
+                        severity="info"
+                        text={errors?.picks?.[index].player_or_team2_str.message as string}
+                      />
+                    )
+                  }
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="odds">Odds</FormLabel>
+                  <FormLabel htmlFor={`picks.${index}.odds`}>Odds</FormLabel>
                   <Controller
                     name={`picks.${index}.odds`}
                     control={control}
@@ -507,13 +523,22 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                           maxFractionDigits={5}
                           {...field}
                           onChange={(e) => field.onChange(e.value)}
+                          id={`picks.${index}.odds`}
                         />
                       )
                     }}
                   />
+                  {
+                    errors?.picks?.[index]?.odds?.message && (
+                      <Message
+                        severity="info"
+                        text={errors?.picks?.[index].odds.message as string}
+                      />
+                    )
+                  }
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="type_of_bet">Type of Bet</FormLabel>
+                  <FormLabel htmlFor={`picks.${index}.type_of_bet`}>Type of Bet</FormLabel>
                   <Controller
                     name={`picks.${index}.type_of_bet`}
                     control={control}
@@ -522,13 +547,14 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                         <InputText
                           placeholder="Asian Handicap, 1x2, Over/Under Goals, Over/Under Cards"
                           {...field}
+                          id={`picks.${index}.type_of_bet`}
                         />
                       )
                     }}
                   />
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="specific_bet">Specific Bet</FormLabel>
+                  <FormLabel htmlFor={`picks.${index}.specific_bet`}>Specific Bet</FormLabel>
                   <Controller
                     name={`picks.${index}.specific_bet`}
                     control={control}
@@ -537,13 +563,14 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                         <InputText
                           placeholder="Over 2.5, Team X -1 HA, Over 185.5 Pts, etc."
                           {...field}
+                          id={`picks.${index}.specific_bet`}
                         />
                       )
                     }}
                   />
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="league_or_tournament_str">
+                  <FormLabel htmlFor={`picks.${index}.league_or_tournament_str`}>
                     League or Tournament
                   </FormLabel>
                   <Controller
@@ -554,13 +581,21 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                         <InputText
                           placeholder="UEFA Champions League, Italy Serie A, ATP Shanghai, NHL"
                           {...field}
+                          id={`picks.${index}.league_or_tournament_str`}
                         />
                       )
                     }}
                   />
+                  {errors?.picks?.[index]?.league_or_tournament_str?.message && (
+                    <Message
+                      severity="info"
+                      text={errors?.picks?.[index].league_or_tournament_str.message as string}
+                    />
+                  )
+                  }
                 </div>
                 <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor="bet_status_id">Bet Status</FormLabel>
+                  <FormLabel htmlFor={`picks.${index}.bet_status_id`}>Bet Status</FormLabel>
                   <Controller
                     name={`picks.${index}.bet_status_id`}
                     control={control}
@@ -573,6 +608,7 @@ function AddPick ({ editMode = false }: { editMode?: boolean }) {
                           value={field.value}
                           onChange={(e) => field.onChange(e.value)}
                           placeholder="Select Status"
+                          id={`picks.${index}.bet_status_id`}
                         />
                       )
                     }}
