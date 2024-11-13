@@ -46,7 +46,7 @@ export function getBetsBySystem ({ pageParam, systemId, startDate, endDate, spor
   searchParams.set('page', (pageParam - 1).toString())
   if (startDate) searchParams.set('start_date', startDate)
   if (endDate) searchParams.set('end_date', endDate)
-  if (sports && sports.length > 0) searchParams.set('sports', sports.join(','))
+  if (sports && sports.length > 0) searchParams.set('sport_list', sports.join(','))
   return fetch(`${import.meta.env.VITE_API_BASE_URL}/betslips/system/${systemId}?${searchParams.toString()}`)
     .then(response => response.json())
     .catch(error => console.error('Error:', error))
