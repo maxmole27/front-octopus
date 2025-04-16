@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router'
 import DashboardLayout from '@ui/layouts/dashboard.layout'
 import Dashboard from '@features/dashboard/dashboard'
 import SystemManager from '@features/system-manager/system-manager'

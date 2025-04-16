@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getBetsBySystem, getSystemById } from '../services/system.service'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { format, parseISO } from 'date-fns'

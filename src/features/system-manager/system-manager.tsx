@@ -1,7 +1,7 @@
 import Heading from '@/ui/components/heading/heading'
 import SystemCard from '@system-manager/components/system-card/system-card'
 import { Button } from 'primereact/button'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { getSystemsService } from './services/system.service'
 import { checkLastPage } from '@/shared/utils/queries.utils'

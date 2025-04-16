@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router'
 import Sidebar from '@components/sidebar/sidebar'
 import './dashboard.css'
 import Header from '@components/header/header'

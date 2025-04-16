@@ -22,7 +22,7 @@ import { createSchema } from './form-create-resolver'
 
 import rawBookiesService from '@/features/common/bookies/bookies.service'
 import rawSportsService from '@/features/common/sports/sports.service'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FormSystemCreate, FormSystemRequest } from '../types/system'
 import { SeverityOptions } from '@/ui/types/toast'
 
