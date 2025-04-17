@@ -3,16 +3,17 @@
   border: 0;
   color: var(--grayscale-50);
   font-family: 'Space Grotesk', Arial, sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-style: italic;
   padding: 10px;
-  transition: .1s ease-in;
+  transition: 0.1s ease-in;
   border-radius: var(--border-radius-box);
   font-weight: 600;
   &:hover {
     background-color: var(--purple-blaze-400);
   }
   &:disabled {
-    opacity: .6;
+    opacity: 0.6;
   }
 }
 

@@ -29,6 +29,7 @@
 .sidebar .linktext {
   color: var(--grayscale-50);
   font-size: .6rem;
+  font-weight: bold;
   text-decoration: none;
   text-align: center;
   width: 100%;

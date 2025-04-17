@@ -1,16 +1,17 @@
 
 .sidebar-element {
-  margin-bottom: 1rem;
+  color: var(--aurus-50);
   display: block;
+  margin-bottom: 1rem;
   text-decoration: none;
-  transition: var(--transition);
   text-align: center;
-  &:hover {
+  &:hover svg{
     transform: scale(1.1, 1.1);
   }
   svg {
-    width: 2.2rem;
-    height: 2.2rem;
+    height: 2.4rem;
     margin: 0 auto;
+    transition: var(--transition);
+    width: 2.4rem;
   }
 }

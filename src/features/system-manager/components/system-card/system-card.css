@@ -1,5 +1,5 @@
 .system-card {
-  background: linear-gradient(180deg, #261E2A 0%, #3C2B44 100%);
+  background: linear-gradient(180deg, #261e2a 0%, #3c2b44 100%);
   border-radius: var(--border-radius-box);
   display: flex;
   flex-direction: column;
@@ -10,12 +10,10 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     transform: scale(1.05, 1.05);
   }
-  
 }
 
 .system-card__icon {
   height: 50px;
-  margin-right: 10px;
   width: 50px;
 }
 
@@ -51,12 +49,23 @@
   margin-right: auto;
   max-width: 300px;
   a {
+    color: var(--aurus-100);
     display: block;
-    padding: 5px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    margin: 5px;
+    display: flex;
+    place-items: center;
+    svg {
+      height: 2rem;
+      width: 2rem;
+    }
   }
 }
 
 .system-card__button {
+  padding-top: 1rem;
   display: flex;
   justify-content: center;
 }
@@ -65,5 +74,4 @@
   .system-card {
     padding: 1rem;
   }
-  
 }

@@ -1,6 +1,12 @@
 .subheader {
-  background-color:#4A3F4E;
+  align-items: center;
+  background-color: #4a3f4e;
+  display: flex;
   padding: 0.5rem 1rem;
   margin-left: var(--sidebar-width);
   width: 100%;
+  p {
+    font-style: italic;
+    margin-left: 1rem;
+  }
 }

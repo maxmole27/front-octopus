@@ -8,7 +8,6 @@ import { Button } from 'primereact/button'
 import { usePickListStore } from '../../store/pick-list.store'
 import { useQuery } from '@tanstack/react-query'
 import rawSportsService from '@/features/common/sports/sports.service'
-import { useState } from 'react'
 
 interface FiltersProps {
   dateRange: Date[] | null
@@ -46,7 +45,6 @@ function TableFilters ({
   const { setFilterRangeStartDate, setFilterRangeEndDate, setFilterSports, setFilterTeamsOrPlayers } = usePickListStore()
 
   const onSubmit = (data: FiltersProps) => {
-    console.log('data', data)
     const { dateRange, sports } = data
     if (dateRange) {
       setFilterRangeStartDate(new Date(dateRange[0]))
@@ -132,7 +130,6 @@ function TableFilters ({
                 onClick={(e) => {
                   e.preventDefault()
                   cleanFilters()
-                  console.log('aaaaaaa', getValues('dateRange'))
                   setRefetchCounter(refetchCounter + 1)
                 }}
               />

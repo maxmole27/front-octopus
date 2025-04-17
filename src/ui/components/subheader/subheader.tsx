@@ -1,16 +1,22 @@
 import { useNavigate } from 'react-router'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { Button } from 'primereact/button'
 import './subheader.css'
 
-function Subheader () {
+function Subheader() {
   const navigate = useNavigate()
 
-  function goBack () {
+  function goBack() {
     navigate(-1)
   }
   return (
-    <div className='subheader'>
-      <button className='subheader__button' onClick={goBack}>go back</button>
-      <p>Welcome back, <strong>moleman27</strong></p>
+    <div className="subheader">
+      <Button onClick={goBack}>
+        <AiOutlineArrowLeft />
+      </Button>
+      <p>
+        Welcome back, <strong>moleman27</strong>
+      </p>
     </div>
   )
 }

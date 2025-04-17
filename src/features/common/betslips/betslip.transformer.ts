@@ -12,7 +12,6 @@ export interface BetslipTransformerProps {
 const betslipTransformer = (betslips: FormPickInterface): BetslipTransformerProps => {
   // find the id of the player_or_team1_id and player_or_teams2_id if not exists create a new one
   // find the id of the league_or_tourament_id if not exists create a new one
-  console.log('la betslips', betslips)
   return {
     id: betslips.id ?? undefined,
     system_id: betslips.system_id,
@@ -20,10 +19,9 @@ const betslipTransformer = (betslips: FormPickInterface): BetslipTransformerProp
     stake: betslips.stake,
     money_stake: betslips.money_stake,
     individual_bets: betslips.picks.map((pick) => {
-      console.log('pick', pick)
       return {
         id: pick.id ? parseInt(pick.id.toString()) : -1,
-        bet_status_id: pick.bet_status_id ?? 3,
+        bet_status_id: pick.bet_status_id ?? 1,
         event_date: new Date(),
         league_or_tournament_id: pick.league_or_tournament_id && pick.league_or_tournament_id.toString().length > 0 ? pick.league_or_tournament_id : -1,
         league_or_tournament_str: pick.league_or_tournament_str,

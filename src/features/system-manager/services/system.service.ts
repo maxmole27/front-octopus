@@ -41,7 +41,6 @@ interface IGetBetsBySystem {
 }
 
 export function getBetsBySystem ({ pageParam, systemId, startDate, endDate, sports }: IGetBetsBySystem) {
-  console.log('aaaaaa', sports)
   const searchParams = new URLSearchParams()
   searchParams.set('page', (pageParam - 1).toString())
   if (startDate) searchParams.set('start_date', startDate)

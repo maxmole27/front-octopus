@@ -1,9 +1,9 @@
-import { IconDashboard } from '@/assets/icons/icon-dashboard'
 import SidebarElement from './components/sidebar-element'
+import { GoHomeFill } from "react-icons/go";
+import { AiFillSetting } from "react-icons/ai";
+import { AiFillSignal } from "react-icons/ai";
+import { AiFillHdd } from "react-icons/ai";
 import './sidebar.css'
-import { IconSystems } from '@/assets/icons/icon-systems'
-import { IconMetrics } from '@/assets/icons/icon-metrics'
-import { IconSettings } from '@/assets/icons/icon-settings'
 
 function Sidebar () {
   return (
@@ -11,19 +11,19 @@ function Sidebar () {
       <nav>
         <ul>
           <SidebarElement url='/'>
-            <IconDashboard />
+            <GoHomeFill />
             <p className='linktext'>Dashboard</p>
           </SidebarElement>
           <SidebarElement url='/systems-manager'>
-            <IconSystems />
+            <AiFillHdd />
             <p className='linktext'>Systems</p>
           </SidebarElement>
           <SidebarElement url='/'>
-            <IconMetrics />
+            <AiFillSignal />
             <p className='linktext'>Metrics</p>
           </SidebarElement>
           <SidebarElement url='/'>
-            <IconSettings />
+            <AiFillSetting />
             <p className='linktext'>Settings</p>
           </SidebarElement>
         </ul>

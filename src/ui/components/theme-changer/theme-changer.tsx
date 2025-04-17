@@ -1,8 +1,8 @@
 import './theme-changer.css'
 import { SelectButton } from 'primereact/selectbutton'
 import { useGlobalConfigStore } from '@/shared/store/global-config.store'
-import { MoonIcon } from '@/ui/icons/moon-icon'
-import { SunIcon } from '@/ui/icons/sun-icon'
+import { AiFillMoon } from "react-icons/ai";
+import { AiFillSun } from "react-icons/ai";
 
 function ThemeChanger () {
   const themeValue = useGlobalConfigStore((state) => state.theme)
@@ -10,7 +10,7 @@ function ThemeChanger () {
 
   return (
     <div className="theme-changer">
-      <SelectButton value={themeValue} onChange={(e) => setTheme(e.value)} options={[<MoonIcon />, <SunIcon />]} />
+      <SelectButton value={themeValue} onChange={(e) => setTheme(e.value)} options={[<AiFillMoon />, <AiFillSun />]} />
     </div>
   )
 }

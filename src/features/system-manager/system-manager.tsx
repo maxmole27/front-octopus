@@ -10,29 +10,28 @@ import NoPicture from '@assets/nopicture.png'
 import React from 'react'
 import { SystemResponse } from './types/system'
 
-function SystemManager () {
+function SystemManager() {
   const {
     data: systemsData,
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching
+    isFetching,
   } = useInfiniteQuery({
     queryKey: ['systems'],
     queryFn: getSystemsService,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       return checkLastPage(lastPage)
-    }
+    },
   })
 
   if (error) return <div>Error: {error.message}</div>
-
   return (
     <>
       <div style={{ position: 'relative' }}>
         <Heading level={3}>System Manager</Heading>
-        <div style={{ position: 'absolute', right: '10px', top: '0px' }}>
+        <div style={{ position: 'absolute', right: '5px', top: '-7px' }}>
           <Link to="/systems-manager/create">
             <Button icon="pi pi-plus" label="New System" severity="success" />
           </Link>
@@ -56,7 +55,6 @@ function SystemManager () {
                   }
                 />
               </div>
-
             ))}
           </React.Fragment>
         ))}
@@ -73,6 +71,14 @@ function SystemManager () {
           />
         )}
       </section>
+      {systemsData?.pages[0]?.totalPages === 0 && (
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <p>No systems found</p>
+          <Link to="/systems-manager/create">
+            <Button severity="success" label="Start Adding a New System" />
+          </Link>
+        </div>
+      )}
     </>
   )
 }
