@@ -1,5 +1,4 @@
 .p-dropdown {
-
 }
 
 .p-dropdown-trigger {
@@ -51,4 +50,9 @@
 .p-dropdown-filter-icon {
   position: absolute;
   right: 5px;
+}
+
+.p-inputwrapper-focus {
+  border: 1px solid #eee;
+  border-radius: 5px;
 }

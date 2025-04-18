@@ -7,16 +7,16 @@ import { getSystemsService } from './services/system.service'
 import { checkLastPage } from '@/shared/utils/queries.utils'
 
 import NoPicture from '@assets/nopicture.png'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SystemResponse } from './types/system'
-
+import { useGlobalConfigStore } from '@/shared/store/global-config.store'
 function SystemManager() {
   const {
     data: systemsData,
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: ['systems'],
     queryFn: getSystemsService,
@@ -25,6 +25,18 @@ function SystemManager() {
       return checkLastPage(lastPage)
     },
   })
+
+  const setGlobalLoading = useGlobalConfigStore(
+    (state) => state.setGlobalLoading
+  )
+
+  useEffect(() => {
+    if (isLoading) {
+      setGlobalLoading(true)
+    } else {
+      setGlobalLoading(false)
+    }
+  }, [isLoading])
 
   if (error) return <div>Error: {error.message}</div>
   return (
@@ -59,12 +71,12 @@ function SystemManager() {
           </React.Fragment>
         ))}
       </div>
-      {isFetching && <div>Loading...</div>}
       <section style={{ display: 'flex', justifyContent: 'center' }}>
         {hasNextPage && (
           <Button
             label="Load More"
             className="p-button-outlined"
+            style={{ marginTop: '1rem' }}
             onClick={() => {
               fetchNextPage()
             }}

@@ -6,13 +6,14 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 import { Router } from './routes'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import GlobalLoading from './features/common/global-loading/global-loading'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
-    }
-  }
+      refetchOnWindowFocus: false,
+    },
+  },
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <Router />
       <ReactQueryDevtools initialIsOpen={false} />
+      <GlobalLoading />
     </QueryClientProvider>
   </React.StrictMode>
 )
