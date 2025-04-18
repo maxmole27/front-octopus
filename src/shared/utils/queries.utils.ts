@@ -5,7 +5,6 @@ interface LastPageProps {
 }
 
 export const checkLastPage = (lastPage: LastPageProps) => {
-  const totalPages = Math.ceil(lastPage.totalItems / lastPage.totalPages)
   const nextPage = lastPage.currentPage + 1
-  return nextPage <= totalPages ? nextPage : undefined
+  return nextPage < lastPage.totalPages ? nextPage : undefined
 }
