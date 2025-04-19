@@ -43,7 +43,18 @@ function SystemManager() {
     <>
       <div style={{ position: 'relative' }}>
         <Heading level={3}>System Manager</Heading>
-        <div style={{ position: 'absolute', right: '5px', top: '-7px' }}>
+        <div
+          style={{
+            position: 'absolute',
+            right: '5px',
+            display: 'flex',
+            gap: '1rem',
+            top: '-7px',
+          }}
+        >
+          <Link to="/pick-manager/bulk-upload">
+            <Button icon="pi pi-plus" label="Bulk Upload" severity="help" />
+          </Link>
           <Link to="/systems-manager/create">
             <Button icon="pi pi-plus" label="New System" severity="success" />
           </Link>
