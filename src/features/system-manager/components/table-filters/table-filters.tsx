@@ -15,37 +15,43 @@ interface FiltersProps {
   teamsOrPlayers: string
 }
 
-function TableFilters ({
+function TableFilters({
   refetchCounter,
   setRefetchCounter,
-  resetPage
-}: { refetchCounter: number, setRefetchCounter: (counter: number) => void, resetPage: () => void }) {
+  resetPage,
+}: {
+  refetchCounter: number
+  setRefetchCounter: (counter: number) => void
+  resetPage: () => void
+}) {
   const {
     handleSubmit,
     formState: { errors },
     control,
     setValue,
-    getValues
+    getValues,
   } = useForm<FiltersProps>({
     defaultValues: {
       dateRange: null,
       sports: [],
-      teamsOrPlayers: ''
-    }
+      teamsOrPlayers: '',
+    },
+  })
+
+  const { data: sports, isLoading: isLoadingSports } = useQuery({
+    queryKey: ['sports'],
+    queryFn: () => rawSportsService(),
   })
 
   const {
-    data: sports,
-    isLoading: isLoadingSports
-  } = useQuery({
-    queryKey: ['sports'],
-    queryFn: () => rawSportsService()
-  })
-
-  const { setFilterRangeStartDate, setFilterRangeEndDate, setFilterSports, setFilterTeamsOrPlayers } = usePickListStore()
+    setFilterRangeStartDate,
+    setFilterRangeEndDate,
+    setFilterSports,
+    setFilterTeamsOrPlayers,
+  } = usePickListStore()
 
   const onSubmit = (data: FiltersProps) => {
-    const { dateRange, sports } = data
+    const { dateRange, sports, teamsOrPlayers } = data
     if (dateRange) {
       setFilterRangeStartDate(new Date(dateRange[0]))
       setFilterRangeEndDate(new Date(dateRange[1]))
@@ -53,13 +59,13 @@ function TableFilters ({
     if (sports) {
       setFilterSports(sports)
     }
+    if (teamsOrPlayers) {
+      setFilterTeamsOrPlayers(teamsOrPlayers)
+    }
     resetPage()
     setRefetchCounter(refetchCounter + 1)
-
-    // setFilterSports('2021-01-01')
-    // setFilterTeamsOrPlayers('2021-01-01')
   }
-  function cleanFilters () {
+  function cleanFilters() {
     setFilterRangeStartDate(null)
     setFilterRangeEndDate(null)
     setValue('dateRange', null)
@@ -68,39 +74,42 @@ function TableFilters ({
   }
 
   return (
-    <div className='table-filters'>
-      <div className='title-box'>Filters</div>
-      <div className='filter-box'>
+    <div className="table-filters">
+      <div className="title-box">Filters</div>
+      <div className="filter-box">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid">
             <article className="col-xs-12 col-s-6 col-l-4 form-element">
               <FormLabel htmlFor="dateRange">Date Range</FormLabel>
               <Controller
                 control={control}
-                name='dateRange'
+                name="dateRange"
                 render={({ field }) => (
                   <Calendar
                     value={field?.value}
                     onChange={(e) => field.onChange(e.value)}
-                    dateFormat='yy-mm-dd'
+                    dateFormat="yy-mm-dd"
                     selectionMode="range"
                     readOnlyInput
                     hideOnRangeSelection
                   />
-                )} />
+                )}
+              />
             </article>
             <article className="col-xs-12 col-s-6 col-l-4 form-element">
               <FormLabel htmlFor="sports">Sport</FormLabel>
               <Controller
                 control={control}
-                name='sports'
+                name="sports"
                 render={({ field }) => (
                   <MultiSelect
                     value={getValues('sports')}
-                    onChange={(e) => { setValue('sports', e.value) }}
+                    onChange={(e) => {
+                      setValue('sports', e.value)
+                    }}
                     options={isLoadingSports ? [] : sports}
                     optionLabel="name"
-                    optionValue='id'
+                    optionValue="id"
                     placeholder="Select Sport"
                   />
                 )}
@@ -110,23 +119,39 @@ function TableFilters ({
               <FormLabel htmlFor="teamsOrPlayers">Teams or Players</FormLabel>
               <Controller
                 control={control}
-                name='teamsOrPlayers'
+                name="teamsOrPlayers"
                 render={({ field }) => {
-                  return <InputText placeholder="Team/Player" className='p-inputtext-variant' {...field} />
+                  return (
+                    <InputText
+                      placeholder="Team/Player"
+                      className="p-inputtext-variant"
+                      {...field}
+                    />
+                  )
                 }}
               />
             </article>
           </div>
           <div className="grid">
             <div className="col-xs-4 form-element" />
-            <div className="col-xs-4 form-element" style={{ paddingTop: '1rem' }}>
-              <Button type="submit" label="Apply" className="p-button-primary" />
+            <div
+              className="col-xs-4 form-element"
+              style={{ paddingTop: '1rem' }}
+            >
+              <Button
+                type="submit"
+                label="Apply"
+                className="p-button-primary"
+              />
             </div>
             <div className="col-xs-2 form-element" />
-            <div className='col-xs-2 form-element' style={{ alignItems: 'flex-end', paddingTop: '1rem' }}>
+            <div
+              className="col-xs-2 form-element"
+              style={{ alignItems: 'flex-end', paddingTop: '1rem' }}
+            >
               <Button
                 icon="pi pi-eraser"
-                className='p-button-alert clean-button-filters'
+                className="p-button-alert clean-button-filters"
                 onClick={(e) => {
                   e.preventDefault()
                   cleanFilters()
