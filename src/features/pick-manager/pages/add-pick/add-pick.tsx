@@ -29,15 +29,12 @@ import { createSchema } from './add-pick-resolver'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SeverityOptions } from '@/ui/types/toast'
 import { useGetPickById } from './useGetPickById'
-import { getTournamentById } from '@/features/system-manager/services/torunaments.service'
-import { LeagueOrTournament } from '@/shared/types/league-or-tournament'
-import { PlayerOrTeam } from '@/shared/types/player-or-team'
-import { getPlayerOrTeamById } from '@/features/system-manager/services/playerOrTeams.service'
 import { pickManagerStore } from '../../store/pick-manager.store'
 import { FormPickInterface } from '../../types/individual-pick'
 import SmartBetRegister from '../smart-bet-register/smart-bet-register'
 import getBetStatuses from '@/features/common/bet-statuses/bet-statuses.service'
 import IndividualPickForm from './components/individual-pick/individual-pick-form'
+import { useAppendBet } from './hooks/useAppendBet'
 
 function AddPick({ editMode = false }: { editMode?: boolean }) {
   const { pickId } = useParams()
@@ -242,68 +239,13 @@ function AddPick({ editMode = false }: { editMode?: boolean }) {
     setEnumPicks(enumPicks + 1)
   }
 
-  async function getLeagueOrTournament(
-    id: number
-  ): Promise<LeagueOrTournament> {
-    const league = await getTournamentById(id)
-    return league
-  }
-
-  async function getPlayerOrTeam(id: number): Promise<PlayerOrTeam> {
-    const playerOrTeam = await getPlayerOrTeamById(id)
-    return playerOrTeam
-  }
-
-  useEffect(() => {
-    function fetchAndAppendBets() {
-      if (pickData === undefined) return
-      remove()
-      if (pickData) {
-        setValue('bookie_id', pickData.bookie_id)
-        setValue('stake', pickData.stake)
-        setValue('money_stake', pickData.money_stake)
-
-        pickData.individual_bets?.forEach(async (item) => {
-          try {
-            // Espera para obtener los datos de liga o torneo
-            const league = await getLeagueOrTournament(
-              item.league_or_tournament_id ?? -1
-            )
-            // Espera para obtener los datos de equipo o jugador 1
-            const playerOrTeam1 = await getPlayerOrTeam(
-              item.player_or_team1_id ?? -1
-            )
-            // Espera para obtener los datos de equipo o jugador 2
-            const playerOrTeam2 = await getPlayerOrTeam(
-              item.player_or_team2_id ?? -1
-            )
-
-            setEnumPicks((prev) => prev + 1)
-            append({
-              id: item.id ?? undefined,
-              sport_id: item.sport_id,
-              player_or_team1_id: item.player_or_team1_id ?? -1,
-              player_or_team2_id: item.player_or_team2_id ?? -1,
-              league_or_tournament_id: item.league_or_tournament_id ?? -1,
-              bet_status_id: item.bet_status_id,
-              league_or_tournament_str: league?.name || 'Desconocido',
-              player_or_team1_str: playerOrTeam1?.name || 'Desconocido',
-              player_or_team2_str: playerOrTeam2?.name || 'Desconocido',
-              specific_bet: item.specific_bet,
-              type_of_bet: item.type_of_bet,
-              odds: item.odds,
-            })
-          } catch (error) {
-            console.error('Error fetching data:', error)
-          }
-        })
-      }
-    }
-
-    fetchAndAppendBets()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pickData])
+  useAppendBet({
+    pickData,
+    setValue,
+    remove,
+    append,
+    setEnumPicks,
+  })
 
   return (
     <div>
@@ -440,8 +382,8 @@ function AddPick({ editMode = false }: { editMode?: boolean }) {
         {fields.map((_, index) => {
           return (
             <IndividualPickForm
+              key={`form-elem-${index}-${enumPicks}`}
               index={index}
-              enumPicks={enumPicks}
               removePick={removePick}
               register={register}
               control={control}

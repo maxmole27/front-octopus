@@ -1,5 +1,10 @@
 import { Fragment } from 'react'
-import { Controller } from 'react-hook-form'
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormRegister,
+} from 'react-hook-form'
 
 import FormSeparator from '@/ui/components/form-separator/form-separator'
 import FormLabel from '@/ui/components/form-label/form-label'
@@ -8,21 +13,20 @@ import { Dropdown } from 'primereact/dropdown'
 import { Message } from 'primereact/message'
 import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
+import { FormPickInterface } from '@/features/pick-manager/types/individual-pick'
 
 interface IndividualPickFormProps {
   index: number
-  enumPicks: number
   removePick: (index: number) => void
-  register: any
-  control: any
-  errors: any
+  register: UseFormRegister<FormPickInterface>
+  control: Control<FormPickInterface>
+  errors: FieldErrors<FormPickInterface>
   sportsData: any[]
   statusesData: any[]
 }
 
 function IndividualPickForm({
   index,
-  enumPicks,
   removePick,
   register,
   control,
@@ -31,7 +35,7 @@ function IndividualPickForm({
   statusesData,
 }: IndividualPickFormProps) {
   return (
-    <Fragment key={`form-elem-${index}-${enumPicks}`}>
+    <Fragment>
       <div className="grid">
         <div className="col-xs-12 col-s-6 col-l-4">
           <FormSeparator
