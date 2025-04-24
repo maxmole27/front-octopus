@@ -3,9 +3,9 @@ import DashboardLayout from '@ui/layouts/dashboard.layout'
 import Dashboard from '@features/dashboard/dashboard'
 import SystemManager from '@features/system-manager/system-manager'
 import FormCreateSystem from './features/system-manager/create/form-create-system'
-import AddPick from './features/pick-manager/add/add-pick'
+import AddPick from './features/pick-manager/pages/add-pick/add-pick'
 import PickList from './features/system-manager/pick-list/pick-list'
-import BulkUpload from './features/pick-manager/components/bulk-upload/bulk-upload'
+import BulkUpload from './features/pick-manager/pages/bulk-upload/bulk-upload'
 
 export const Router = () => {
   return (

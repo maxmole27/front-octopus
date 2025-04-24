@@ -1,40 +1,43 @@
-import { useState, Fragment, useEffect, MouseEvent, useRef } from 'react'
-import SmartBetRegister from '../components/smart-bet-register/smart-bet-register'
-import FormLabel from '@/ui/components/form-label/form-label'
+import { useState, useEffect, MouseEvent, useRef } from 'react'
 
-import { HeadingWithImage } from '@/ui/components/heading/heading'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { useNavigate, useParams, useSearchParams } from 'react-router'
+
+import FormLabel from '@/ui/components/form-label/form-label'
+import { HeadingWithImage } from '@/ui/components/heading/heading'
+
 import { Message } from 'primereact/message'
 import { Dropdown } from 'primereact/dropdown'
-import rawBookiesService from '@/features/common/bookies/bookies.service'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import FormSeparator from '@/ui/components/form-separator/form-separator'
-import rawSportsService from '@/features/common/sports/sports.service'
 import { Button } from 'primereact/button'
-import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
-import { FormPickInterface } from '../types/individual-pick'
+import { Toast } from 'primereact/toast'
+
+import './add-pick.css'
+
+import rawBookiesService from '@/features/common/bookies/bookies.service'
+import rawSportsService from '@/features/common/sports/sports.service'
 import { getSystemById } from '@/features/system-manager/services/system.service'
-import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { SystemResponse } from '@/features/system-manager/types/system'
 import {
   createBetslipWithIndividualBets,
   updateBetslipWithIndidivualBets,
 } from '@/features/common/betslips/betslip.service'
 import betslipTransformer from '@/features/common/betslips/betslip.transformer'
-import { getBetStatuses } from '../services/bet-statuses.service'
 import { IndividualBetCreate } from '@/features/system-manager/types/individual-bet'
-import './add-pick.css'
 import { createSchema } from './add-pick-resolver'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Toast } from 'primereact/toast'
 import { SeverityOptions } from '@/ui/types/toast'
 import { useGetPickById } from './useGetPickById'
 import { getTournamentById } from '@/features/system-manager/services/torunaments.service'
 import { LeagueOrTournament } from '@/shared/types/league-or-tournament'
 import { PlayerOrTeam } from '@/shared/types/player-or-team'
 import { getPlayerOrTeamById } from '@/features/system-manager/services/playerOrTeams.service'
-import { pickManagerStore } from '../store/pick-manager.store'
+import { pickManagerStore } from '../../store/pick-manager.store'
+import { FormPickInterface } from '../../types/individual-pick'
+import SmartBetRegister from '../smart-bet-register/smart-bet-register'
+import getBetStatuses from '@/features/common/bet-statuses/bet-statuses.service'
+import IndividualPickForm from './components/individual-pick/individual-pick-form'
 
 function AddPick({ editMode = false }: { editMode?: boolean }) {
   const { pickId } = useParams()
@@ -436,233 +439,16 @@ function AddPick({ editMode = false }: { editMode?: boolean }) {
         </section>
         {fields.map((_, index) => {
           return (
-            <Fragment key={`form-elem-${index}-${enumPicks}`}>
-              <div className="grid">
-                <div className="col-xs-12 col-s-6 col-l-4">
-                  <FormSeparator
-                    title={`Pick N°${index + 1}`}
-                    onRemoveClick={() => {
-                      removePick(index)
-                    }}
-                  />
-                </div>
-              </div>
-              <input type="hidden" {...register(`picks.${index}.id`)} />
-              <input
-                type="hidden"
-                {...register(`picks.${index}.player_or_team1_id`)}
-              />
-              <input
-                type="hidden"
-                {...register(`picks.${index}.player_or_team2_id`)}
-              />
-              <input
-                type="hidden"
-                {...register(`picks.${index}.league_or_tournament_id`)}
-              />
-
-              <div className="grid">
-                <div className="col-xs-6 col-s-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.sport_id`}>
-                    Sport
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.sport_id`}
-                    key={`picks.${index}.sport_id`}
-                    control={control}
-                    render={({ field }) => {
-                      const { onChange, onBlur, value, ref } = field
-                      return (
-                        <Dropdown
-                          placeholder="Select a Sport"
-                          options={sportsData}
-                          optionLabel="name"
-                          optionValue="id"
-                          value={value}
-                          onChange={(e) => onChange(e.value)}
-                          onBlur={onBlur}
-                          ref={ref}
-                          id={`picks.${index}.sport_id`}
-                        />
-                      )
-                    }}
-                  />
-                  {errors?.picks?.[index]?.sport_id?.message && (
-                    <Message
-                      severity="info"
-                      text={errors?.picks?.[index].sport_id.message as string}
-                    />
-                  )}
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.player_or_team1_str`}>
-                    Team/Player 1
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.player_or_team1_str`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <InputText
-                          placeholder="Team/Player 1"
-                          {...field}
-                          id={`picks.${index}.player_or_team1_str`}
-                        />
-                      )
-                    }}
-                  />
-                  {errors?.picks?.[index]?.player_or_team1_str?.message && (
-                    <Message
-                      severity="info"
-                      text={
-                        errors?.picks?.[index].player_or_team1_str
-                          .message as string
-                      }
-                    />
-                  )}
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.player_or_team2_str`}>
-                    Team/Player 2
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.player_or_team2_str`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <InputText
-                          placeholder="Team/Player 2"
-                          {...field}
-                          id={`picks.${index}.player_or_team2_str`}
-                        />
-                      )
-                    }}
-                  />
-                  {errors?.picks?.[index]?.player_or_team2_str?.message && (
-                    <Message
-                      severity="info"
-                      text={
-                        errors?.picks?.[index].player_or_team2_str
-                          .message as string
-                      }
-                    />
-                  )}
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.odds`}>Odds</FormLabel>
-                  <Controller
-                    name={`picks.${index}.odds`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <InputNumber
-                          placeholder="Odds"
-                          minFractionDigits={2}
-                          maxFractionDigits={5}
-                          {...field}
-                          onChange={(e) => field.onChange(e.value)}
-                          id={`picks.${index}.odds`}
-                        />
-                      )
-                    }}
-                  />
-                  {errors?.picks?.[index]?.odds?.message && (
-                    <Message
-                      severity="info"
-                      text={errors?.picks?.[index].odds.message as string}
-                    />
-                  )}
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.type_of_bet`}>
-                    Type of Bet
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.type_of_bet`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <InputText
-                          placeholder="Asian Handicap, 1x2, Over/Under Goals, Over/Under Cards"
-                          {...field}
-                          id={`picks.${index}.type_of_bet`}
-                        />
-                      )
-                    }}
-                  />
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.specific_bet`}>
-                    Specific Bet
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.specific_bet`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <InputText
-                          placeholder="Over 2.5, Team X -1 HA, Over 185.5 Pts, etc."
-                          {...field}
-                          id={`picks.${index}.specific_bet`}
-                        />
-                      )
-                    }}
-                  />
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel
-                    htmlFor={`picks.${index}.league_or_tournament_str`}
-                  >
-                    League or Tournament
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.league_or_tournament_str`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <InputText
-                          placeholder="UEFA Champions League, Italy Serie A, ATP Shanghai, NHL"
-                          {...field}
-                          id={`picks.${index}.league_or_tournament_str`}
-                        />
-                      )
-                    }}
-                  />
-                  {errors?.picks?.[index]?.league_or_tournament_str
-                    ?.message && (
-                    <Message
-                      severity="info"
-                      text={
-                        errors?.picks?.[index].league_or_tournament_str
-                          .message as string
-                      }
-                    />
-                  )}
-                </div>
-                <div className="col-xs-6 col-l-4 form-element">
-                  <FormLabel htmlFor={`picks.${index}.bet_status_id`}>
-                    Bet Status
-                  </FormLabel>
-                  <Controller
-                    name={`picks.${index}.bet_status_id`}
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <Dropdown
-                          options={statusesData}
-                          optionLabel="name"
-                          optionValue="id"
-                          value={field.value}
-                          onChange={(e) => field.onChange(e.value)}
-                          placeholder="Select Status"
-                          id={`picks.${index}.bet_status_id`}
-                        />
-                      )
-                    }}
-                  />
-                </div>
-              </div>
-            </Fragment>
+            <IndividualPickForm
+              index={index}
+              enumPicks={enumPicks}
+              removePick={removePick}
+              register={register}
+              control={control}
+              errors={errors}
+              sportsData={sportsData}
+              statusesData={statusesData}
+            />
           )
         })}
         <section className="grid">
