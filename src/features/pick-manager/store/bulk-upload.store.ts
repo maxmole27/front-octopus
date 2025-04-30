@@ -1,14 +1,18 @@
-import { SmartBetResponse } from '@/features/system-manager/types/individual-bet'
+import { BetslipTransformerProps } from '@/features/common/betslips/betslip.transformer'
 import { create } from 'zustand'
 
 interface BulkUploadStoreInterface {
-  bulkImagesResponse: SmartBetResponse[]
-  setBulkImagesResponse: (response: SmartBetResponse[]) => void
+  bulkImagesResponse: BetslipTransformerProps[]
+  setBulkImagesResponse: (response: BetslipTransformerProps[]) => void
+  appendBulkImagesResponse: (response: BetslipTransformerProps) => void
 }
 
 export const useBulkUploadStore = create<BulkUploadStoreInterface>((set) => ({
   bulkImagesResponse: [],
-  setBulkImagesResponse: (response: SmartBetResponse[]) => {
-    set(() => ({ bulkImagesResponse: response }))
-  },
+  setBulkImagesResponse: (response: BetslipTransformerProps[]) =>
+    set({ bulkImagesResponse: response }),
+  appendBulkImagesResponse: (response: BetslipTransformerProps) =>
+    set((state) => ({
+      bulkImagesResponse: [...state.bulkImagesResponse, { ...response }],
+    })),
 }))

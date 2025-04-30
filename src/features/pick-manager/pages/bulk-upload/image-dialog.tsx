@@ -16,8 +16,12 @@ interface MultiImageResponse {
 }
 
 function ImageDialog({ visible, setVisible }: ImageDialogProps) {
-  const setBulkImagesResponse = useBulkUploadStore(
-    (state) => state.setBulkImagesResponse
+  const appendBulkImagesResponse = useBulkUploadStore(
+    (state) => state.appendBulkImagesResponse
+  )
+
+  const bulkImagesResponse = useBulkUploadStore(
+    (state) => state.bulkImagesResponse
   )
 
   const onUpload = (event: FileUploadUploadEvent) => {
@@ -25,13 +29,32 @@ function ImageDialog({ visible, setVisible }: ImageDialogProps) {
       const formattedData: MultiImageResponse[] = JSON.parse(event.xhr.response)
 
       if (formattedData) {
-        formattedData.forEach((item: MultiImageResponse) => {
+        formattedData.map((item: MultiImageResponse) => {
+          console.log('Item:', item)
           const internalCompletion: SmartBetResponse[] = JSON.parse(
             item.completion
           )
           console.log('Internal Completion:', internalCompletion)
+          appendBulkImagesResponse({
+            money_stake: 0,
+            stake: 0,
+            system_id: 0,
+            bookie_id: 0,
+            individual_bets: internalCompletion.map((bet: SmartBetResponse) => {
+              return {
+                id: -1,
+                bet_status_id: 1,
+                odds: parseFloat(bet.odds),
+                player_or_team1_id: -1,
+                player_or_team2_id: -1,
+                specific_bet: bet.specific_bet,
+                sport_id: -1,
+                type_of_bet: bet.type_of_bet,
+                league_or_tournament_id: -1,
+              }
+            }),
+          })
         })
-        // setBulkImagesResponse(data)
         // console.log('Transformed Data:', data)
       }
     }

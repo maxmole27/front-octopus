@@ -1,9 +1,9 @@
 .p-datatable-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: var(--border-radius-box);
-    overflow: hidden;
-    table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: var(--border-radius-box);
+  overflow: hidden;
+  table-layout: fixed;
 }
 
 .p-datatable-thead {
@@ -12,17 +12,17 @@
 
 .p-datatable-thead th {
   background-color: var(--ice-blue-400);
-  padding: .5rem;
+  padding: 0.3rem;
 }
 
 .p-datatable-tbody tr {
-background-color: rgba(255,255,255,.12);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 .p-datatable-tbody tr td {
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .p-datatable-table tbody tr:nth-of-type(odd) {
-background-color: rgba(255,255,255,.07);
+  background-color: rgba(255, 255, 255, 0.07);
 }

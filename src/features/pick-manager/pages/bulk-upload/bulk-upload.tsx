@@ -28,16 +28,21 @@ function BulkUpload() {
         />
       </div>
       <div className="bulk-upload__list">
-        {bulkImagesResponse.map((item, index) => (
-          <div>
-            <div key={index} className="bulk-upload__item">
-              <span>{item.bet_status}</span>
-              <span>{item.event_date}</span>
-              <span>{item.final_score}</span>
-              <span>{item.potential_win}</span>
+        {bulkImagesResponse.map((item, index) => {
+          console.log('wololoooop', bulkImagesResponse)
+          return (
+            <div key={index}>
+              <div className="bulk-upload__item">
+                <p> WOLOLO </p>
+                <p>{item.money_stake}</p>
+                <p>{item.stake}</p>
+                <p>{item.system_id}</p>
+                <p>{item.bookie_id}</p>
+                <p> ---------------- </p>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
