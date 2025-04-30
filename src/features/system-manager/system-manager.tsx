@@ -10,7 +10,11 @@ import NoPicture from '@assets/nopicture.png'
 import React, { useEffect } from 'react'
 import { SystemResponse } from './types/system'
 import { useGlobalConfigStore } from '@/shared/store/global-config.store'
+import SearchBar from './components/search-bar/search-bar'
+import { useSystemsStore } from './store/systems.store'
 function SystemManager() {
+  const searchQuery = useSystemsStore((state) => state.search_query)
+
   const {
     data: systemsData,
     error,
@@ -18,8 +22,9 @@ function SystemManager() {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['systems'],
-    queryFn: getSystemsService,
+    queryKey: ['systems', searchQuery],
+    queryFn: ({ pageParam = 0 }) =>
+      getSystemsService({ pageParam: pageParam, system_name: searchQuery }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       return checkLastPage(lastPage)
@@ -59,6 +64,9 @@ function SystemManager() {
             <Button icon="pi pi-plus" label="New System" severity="success" />
           </Link>
         </div>
+      </div>
+      <div>
+        <SearchBar />
       </div>
       <div className="grid" style={{ gap: '1rem' }}>
         {systemsData?.pages.map((page, i) => (

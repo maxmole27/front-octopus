@@ -21,8 +21,19 @@ export function createSystemService(newSystem: FormSystemCreate) {
     })
 }
 
-export function getSystemsService({ pageParam }: { pageParam: number }) {
-  return fetch(`${import.meta.env.VITE_API_BASE_URL}/systems?page=${pageParam}`)
+interface IGetSystemsService {
+  pageParam: number
+  system_name?: string
+}
+export function getSystemsService({
+  pageParam,
+  system_name,
+}: IGetSystemsService) {
+  const searchParams = new URLSearchParams()
+  searchParams.append('page', pageParam.toString())
+  if (system_name) searchParams.set('system_name', system_name)
+  console.log('searchParams', searchParams.toString())
+  return fetch(`${import.meta.env.VITE_API_BASE_URL}/systems?${searchParams}`)
     .then((response) => response.json())
     .catch((error) => console.error('Error:', error))
 }
