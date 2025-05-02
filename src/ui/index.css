@@ -15,6 +15,7 @@
 @import url('./styles/calendar.css');
 @import url('./styles/multi-select.css');
 @import url('./styles/checkbox.css');
+@import url('./styles/chip.css');
 
 * {
   box-sizing: border-box;

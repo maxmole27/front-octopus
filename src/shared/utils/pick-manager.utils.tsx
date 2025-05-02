@@ -66,7 +66,7 @@ export function getRealOddsParlay(betslip: BetslipResponse) {
 export function getAllParlayPicks(betslip: BetslipResponse): React.ReactNode {
   return (
     <>
-      <strong>Parlay Picks</strong>
+      <strong>Parlay Pick</strong>
       <div style={{ fontSize: '.8rem' }}>
         {betslip.individual_bets.map((bet: IndividualBet, index: number) => {
           return (
@@ -87,6 +87,27 @@ export function getAllParlayPicks(betslip: BetslipResponse): React.ReactNode {
         })}
       </div>
     </>
+  )
+}
+
+export function getAllParlayPicksAlternate(
+  betslip: BetslipResponse
+): React.ReactNode {
+  return (
+    <div className="pick-data__alternate">
+      <div style={{ fontSize: '.8rem' }}>
+        {betslip.individual_bets.map((bet: IndividualBet, index: number) => {
+          return (
+            <div key={index}>
+              <span>
+                {bet.player_or_team1.name} vs {bet.player_or_team2.name}
+              </span>
+              <br />
+            </div>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
