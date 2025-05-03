@@ -102,6 +102,10 @@ function AddPick({ editMode = false }: { editMode?: boolean }) {
   })
 
   useEffect(() => {
+    console.log('getValues', getValues('picks'))
+  })
+
+  useEffect(() => {
     if (currentPickId === parseInt(pickId ?? '0')) return
     setCurrentPickId(parseInt(pickId ?? '0'))
   }, [pickId, currentPickId])

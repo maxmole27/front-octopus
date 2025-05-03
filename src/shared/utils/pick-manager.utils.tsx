@@ -1,7 +1,7 @@
 import { IndividualBet } from '@/features/system-manager/types/individual-bet'
 import { BetslipResponse } from '@/features/system-manager/types/system'
 import {
-  BET_STATUS_HALF_LOSS,
+  BET_STATUS_HALF_LOST,
   BET_STATUS_HALF_WIN,
   BET_STATUS_LOSE,
   BET_STATUS_PENDING,
@@ -51,7 +51,7 @@ export function handleOddsParlay(betslip: BetslipResponse) {
     if (bet.bet_status_id === BET_STATUS_PENDING) return 1
     if (bet.bet_status_id === BET_STATUS_WON) return bet.odds
     if (bet.bet_status_id === BET_STATUS_HALF_WIN) return bet.odds / 2
-    if (bet.bet_status_id === BET_STATUS_HALF_LOSS) return 0
+    if (bet.bet_status_id === BET_STATUS_HALF_LOST) return 0
     return bet.odds
   })
   return odds.reduce((acc, bet) => acc * bet, 1).toFixed(2)

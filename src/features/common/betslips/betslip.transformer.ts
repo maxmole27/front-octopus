@@ -21,6 +21,7 @@ const betslipTransformer = (
     stake: betslip.stake,
     money_stake: betslip.money_stake,
     individual_bets: betslip.picks.map((pick) => {
+      console.log('existe', pick.bet_status_id)
       return {
         id: pick.id ? parseInt(pick.id.toString()) : -1,
         bet_status_id: pick.bet_status_id ?? 1,

@@ -1,0 +1,22 @@
+.status-chip-won {
+  background-color: var(--col-success-300);
+}
+
+.status-chip-pending {
+  background-color: var(--ice-blue-400);
+}
+.status-chip-lost {
+  background-color: var(--red-tomato-300);
+}
+.status-chip-void {
+  background-color: var(--ice-blue-400);
+}
+.status-chip-cancelled {
+  background-color: var(--ice-blue-400);
+}
+.status-chip-half-win {
+  background-color: var(--col-success-200);
+}
+.status-chip-half-lost {
+  background-color: var(--red-tomato-100);
+}

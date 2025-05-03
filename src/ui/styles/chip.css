@@ -1,10 +1,9 @@
 .p-chip {
   background-color: var(--ice-blue-500);
-  border: 1px solid var(--purple-blaze-500);
   color: var(--purple-aurus-50);
   font-weight: bold;
   font-style: italic;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 .p-chip-text {
   padding: 0.1rem 0.5rem;

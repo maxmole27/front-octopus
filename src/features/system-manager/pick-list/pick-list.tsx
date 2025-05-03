@@ -17,6 +17,7 @@ import { Dialog } from 'primereact/dialog'
 import { getYYYYMMDD } from '@/shared/utils/date-handlers'
 import BlockList from '../components/block-list/block-list'
 import {
+  handleBookieName,
   handleEventName,
   handleLeagueOrTournament,
   handleOdds,
@@ -27,6 +28,8 @@ import {
   handleStatus,
   handleTypeOfBet,
 } from './hande-pick-data'
+import rawBookiesService from '@/features/common/bookies/bookies.service'
+import { getStatusChip } from '../components/status-chip/status-chip'
 
 function PickList() {
   // const location = useLocation()
@@ -44,6 +47,11 @@ function PickList() {
   const [first, setFirst] = useState(0)
   const [rows, setRows] = useState(10)
   const [listMode, setListMode] = useState(true)
+
+  const { data: bookiesData, isLoading: isLoadingBookies } = useQuery({
+    queryKey: ['bookies'],
+    queryFn: () => rawBookiesService(),
+  })
 
   const pageParam = searchParams.get('page')
   const page = pageParam ? parseInt(pageParam) : 1
@@ -132,7 +140,7 @@ function PickList() {
         setRefetchCounter={setRefetchCounter}
         resetPage={resetPage}
       />
-      {!listMode ? (
+      {listMode ? (
         <DataTable value={systemBets?.data} loading={isLoadingBets}>
           <Column
             field="registered_data"
@@ -153,6 +161,11 @@ function PickList() {
             field="league_or_tournament"
             header="League"
             body={(betslip) => handleLeagueOrTournament(betslip)}
+          ></Column>
+          <Column
+            field="bookie"
+            header="Bookie"
+            body={(betslip) => handleBookieName(betslip, bookiesData)}
           ></Column>
           <Column
             field="type_of_bet"
@@ -177,7 +190,7 @@ function PickList() {
           <Column
             field="status"
             header="Status"
-            body={(betslip) => handleStatus(betslip)}
+            body={(betslip) => getStatusChip(handleStatus(betslip) ?? '')}
           ></Column>
           <Column
             field="actions"

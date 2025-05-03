@@ -233,15 +233,15 @@ function IndividualPickForm({
             name={`picks.${index}.bet_status_id`}
             control={control}
             render={({ field }) => {
+              console.log('statusesData', statusesData)
               return (
                 <Dropdown
+                  {...field} // name, value, onChange, onBlur, ref
                   options={statusesData}
                   optionLabel="name"
                   optionValue="id"
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.value)}
                   placeholder="Select Status"
-                  id={`picks.${index}.bet_status_id`}
+                  onChange={(e) => field.onChange(e.value)} // sobreescribís sólo el onChange
                 />
               )
             }}

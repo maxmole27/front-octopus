@@ -12,6 +12,7 @@ import {
 import { BetslipResponse } from '../types/system'
 import { format, parseISO } from 'date-fns'
 import { BET_STATUS } from '@/ui/constants'
+import { Chip } from 'primereact/chip'
 
 export function handleEventName(
   betslip: BetslipResponse,
@@ -51,8 +52,8 @@ export function handleLeagueOrTournament(betslip: BetslipResponse) {
   return getAllLeagues(betslip)
 }
 
-export function handleStake(betslip: BetslipResponse) {
-  return betslip.stake
+export function handleStake(betslip: BetslipResponse): React.ReactNode {
+  return <Chip label={betslip.stake.toString()} />
 }
 
 export function handleOdds(betslip: BetslipResponse) {
@@ -86,4 +87,16 @@ export function handleSpecificBet(betslip: BetslipResponse) {
   if (betslip.individual_bets.length === 1)
     return betslip.individual_bets[0].specific_bet
   return getAllSpecificBets(betslip)
+}
+
+export function handleBookieName(
+  betslip: BetslipResponse,
+  bookiesData: any
+): React.ReactNode {
+  if (!bookiesData) return 'No Bookie !'
+  const bookie = bookiesData.find(
+    (bookie: any) => bookie.id === betslip.bookie_id
+  )
+  if (!bookie) return 'No Bookie !'
+  return bookie.name
 }
